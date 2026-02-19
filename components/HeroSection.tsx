@@ -60,7 +60,7 @@ const MagneticCTA = memo(({ to }: { to: string }) => {
                 <div className="relative border-2 border-brand-500 bg-brand-500/10 px-8 py-4 overflow-hidden transition-all duration-300 group-hover:bg-brand-500">
                     <span className="relative font-display font-bold text-brand-500 group-hover:text-black tracking-[0.2em] text-sm uppercase flex items-center gap-3 transition-colors duration-300">
                         <Shield className="w-4 h-4" />
-                        Solicitar Seguridad
+                        SOLICITAR COTIZACIÓN EN SEGURIDAD
                     </span>
                 </div>
             </Link>
@@ -299,25 +299,6 @@ const HeroSection: React.FC = () => {
                     <MagneticCTA to="/contacto" />
                 </div>
 
-                {/* Bottom Stats */}
-                <div className="hero-subtitle absolute bottom-20 md:bottom-24 left-1/2 -translate-x-1/2">
-                    <div className="flex items-center gap-6 md:gap-12">
-                        <div className="text-center">
-                            <div className="font-display font-bold text-2xl md:text-3xl text-white">14+</div>
-                            <div className="font-mono text-[10px] text-neutral-500 uppercase tracking-wider mt-1">Años</div>
-                        </div>
-                        <div className="w-px h-10 bg-neutral-800" />
-                        <div className="text-center">
-                            <div className="font-display font-bold text-2xl md:text-3xl text-white">143</div>
-                            <div className="font-mono text-[10px] text-neutral-500 uppercase tracking-wider mt-1">Agentes</div>
-                        </div>
-                        <div className="w-px h-10 bg-neutral-800" />
-                        <div className="text-center">
-                            <div className="font-display font-bold text-2xl md:text-3xl text-brand-500">RNP</div>
-                            <div className="font-mono text-[10px] text-neutral-500 uppercase tracking-wider mt-1">Activo</div>
-                        </div>
-                    </div>
-                </div>
 
                 {/* Scroll indicator */}
                 <div className="hero-scroll absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">

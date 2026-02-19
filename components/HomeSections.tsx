@@ -888,9 +888,9 @@ const HoloCardV2 = ({ title, type, serial, delay }: { title: string, type: strin
                 {/* 3. CONTENT LAYOUT */}
                 <div className="absolute inset-0 p-6 flex flex-col justify-between z-10">
                     {/* Top Meta */}
-                    <div className="flex justify-between items-start font-mono text-[10px] text-neutral-500">
-                        <span className="group-hover:text-brand-500 transition-colors">//{type}</span>
-                        <span className="border border-neutral-800 px-1 group-hover:border-brand-500 transition-colors">{serial}</span>
+                    <div className="flex justify-between items-start font-mono text-neutral-500">
+                        <span className="text-[10px] group-hover:text-brand-500 transition-colors">//{type}</span>
+                        <span className={`border border-neutral-800 px-2 group-hover:border-brand-500 transition-colors ${type === 'TAX_REG' ? 'text-lg font-bold text-brand-500' : 'text-[10px]'}`}>{serial}</span>
                     </div>
 
                     {/* Center Graphic/Icon (Abstract) */}
@@ -955,11 +955,10 @@ export const HomeDocs = () => {
                 </div>
 
                 {/* ARTIFACTS GRID */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <HoloCardV2 title="RNP Activo" type="LIC_GOV" serial="ESTADO" delay={0} />
                     <HoloCardV2 title="RUC Verificado" type="TAX_REG" serial="20477208348" delay={0.1} />
                     <HoloCardV2 title="CIIU 74927" type="ACT_CODE" serial="SEGURIDAD" delay={0.2} />
-                    <HoloCardV2 title="Habido SUNAT" type="FISCAL" serial="ACTIVO" delay={0.3} />
                 </div>
 
                 {/* BOTTOM MARQUEE */}

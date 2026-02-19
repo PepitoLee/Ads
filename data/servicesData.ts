@@ -53,9 +53,9 @@ export const servicesData: ServiceDetail[] = [
     shortTitle: 'Seguridad Minera',
     subtitle: 'Protección integral de activos en entornos de alta exigencia',
     description: 'Protección integral de grandes extensiones, campamentos mineros, tajos abiertos y maquinaria pesada en zonas agrestes.',
-    longDescription: `Nuestra división de Seguridad Patrimonial y Minera está diseñada para operar en los entornos más desafiantes del Perú. Con más de 12 años de experiencia protegiendo operaciones mineras en La Libertad, Cajamarca y Ancash, hemos desarrollado protocolos especializados que combinan vigilancia humana de élite con tecnología de punta.
+    longDescription: `Nuestra división de Seguridad Patrimonial y Minera está diseñada para operar en los entornos más desafiantes del Perú. Con más de 12 años de experiencia protegiendo operaciones mineras en La Libertad, hemos desarrollado protocolos especializados que combinan vigilancia con tecnología de punta.
 
-Nuestros agentes reciben entrenamiento especializado en supervivencia en altura, primeros auxilios avanzados y manejo de crisis. Operamos en condiciones extremas: desde los 4,500 msnm hasta zonas desérticas de alta radiación solar.
+Nuestros agentes reciben entrenamiento especializado en supervivencia en altura, primeros auxilios avanzados y manejo de crisis. Operamos en condiciones extremas.
 
 Cada operación cuenta con un Plan de Seguridad Integral personalizado, diseñado tras un análisis exhaustivo de vulnerabilidades y amenazas específicas del sitio.`,
     icon: Mountain,
@@ -72,19 +72,18 @@ Cada operación cuenta con un Plan de Seguridad Integral personalizado, diseñad
       },
       {
         title: 'Gestión de Emergencias',
-        description: 'Protocolos de evacuación, brigadas de respuesta y coordinación con autoridades locales. Simulacros trimestrales obligatorios.'
+        description: 'Protocolos de evacuación, brigadas de respuesta. Simulacros trimestrales obligatorios.'
       },
       {
         title: 'Inteligencia Preventiva',
-        description: 'Análisis de riesgos, mapeo de actores hostiles y alertas tempranas. Red de informantes en comunidades aledañas.'
+        description: 'Análisis de riesgos, mapeo de actores hostiles y alertas tempranas.'
       }
     ],
     specifications: [
       { label: 'Cobertura máxima', value: 'Hasta 50,000 hectáreas' },
-      { label: 'Personal disponible', value: '80+ agentes certificados' },
+      { label: 'Personal disponible', value: 'Agentes certificados' },
       { label: 'Tiempo de respuesta', value: '< 5 minutos' },
-      { label: 'Altitud operativa', value: 'Hasta 5,200 msnm' },
-      { label: 'Turnos', value: '24/7/365' },
+      { label: 'Altitud operativa', value: 'Hasta 5000 msnm' },
       { label: 'Comunicación', value: 'Radio digital encriptada' }
     ],
     gallery: [
@@ -94,15 +93,15 @@ Cada operación cuenta con un Plan de Seguridad Integral personalizado, diseñad
       { url: '/images/services/seguridad-patrimonial/4.jpeg', alt: 'Operaciones en altura', type: 'image' }
     ],
     caseStudy: {
-      client: 'Minera Aurífera del Norte',
+      client: 'Minera Summa Gold',
       industry: 'Minería de oro a cielo abierto',
-      challenge: 'Incremento del 300% en intentos de intrusión y robo de cables de alta tensión durante 2022. Pérdidas estimadas en $2.4M USD.',
-      solution: 'Implementación de sistema integral: 45 agentes en 3 turnos, drones con visión térmica, y red de sensores perimetrales. Coordinación directa con PNP.',
-      result: 'Reducción del 94% en incidentes. Cero robos exitosos en 18 meses. ROI positivo en 6 meses.'
+      challenge: 'Incremento del 300% en intentos de intrusión y robo de MINERAL AURÍFERO.',
+      solution: 'Implementación de sistema integral: 45 agentes en 3 turnos, drones con visión térmica, y red de sensores perimetrales. Cámaras de vigilancia.',
+      result: 'Reducción del 94% en incidentes. Cero robos exitosos en 18 meses.'
     },
     benefits: [
       'Reducción comprobada de pérdidas por robo',
-      'Cumplimiento normativo con SUCAMEC y OSINERGMIN',
+      'Cumplimiento normativo con SUCAMEC',
       'Personal certificado en altura y primeros auxilios',
       'Reportes diarios y dashboard en tiempo real',
       'Seguro de responsabilidad civil incluido'
@@ -120,7 +119,7 @@ Cada operación cuenta con un Plan de Seguridad Integral personalizado, diseñad
     description: 'Flota DJI Matrice/Mavic con visión térmica y nocturna. Smart Track para seguimiento inteligente de intrusos en oscuridad total.',
     longDescription: `Nuestra división aérea representa la vanguardia en vigilancia remota para el sector minero e industrial peruano. Operamos una flota de drones profesionales DJI certificados, equipados con las últimas tecnologías en imagen térmica, visión nocturna y seguimiento autónomo.
 
-El sistema Smart Track permite que nuestros UAV identifiquen y sigan automáticamente a intrusos incluso en condiciones de oscuridad total, transmitiendo video en tiempo real a nuestro Centro de Control.
+El sistema Smart Track permite que nuestros drones identifiquen y sigan automáticamente a intrusos incluso en condiciones de oscuridad total, transmitiendo video en tiempo real a nuestro Centro de Control.
 
 Todos nuestros pilotos cuentan con certificación DGAC y más de 500 horas de vuelo documentadas. Cumplimos estrictamente con la normativa aeronáutica peruana y coordinamos con autoridades cuando operamos cerca de zonas restringidas.`,
     icon: Plane,
@@ -128,7 +127,7 @@ Todos nuestros pilotos cuentan con certificación DGAC y más de 500 horas de vu
     heroVideo: 'https://assets.mixkit.co/videos/preview/mixkit-drone-flying-over-a-snowy-mountain-range-3528-large.mp4',
     features: [
       {
-        title: 'Visión Térmica FLIR',
+        title: 'Visión Térmica sensor NIR',
         description: 'Cámaras térmicas de grado militar que detectan presencia humana a más de 2km de distancia, día y noche, en cualquier condición climática.'
       },
       {
@@ -141,14 +140,14 @@ Todos nuestros pilotos cuentan con certificación DGAC y más de 500 horas de vu
       },
       {
         title: 'Transmisión Encriptada',
-        description: 'Video 4K en tiempo real con encriptación AES-256. Alcance de transmisión hasta 15km sin pérdida de señal.'
+        description: 'Video en tiempo real. Alcance de transmisión hasta 15km sin pérdida de señal.'
       }
     ],
     specifications: [
-      { label: 'Flota disponible', value: '12 unidades DJI' },
-      { label: 'Modelos', value: 'Matrice 300 RTK, Mavic 3T' },
+      { label: 'Flota disponible', value: '8 drones de seguridad' },
+      { label: 'Modelos', value: 'MATRICE 4TD - MATRICE 4T - MATRICE 30T - ENTERPRISE 3T' },
       { label: 'Autonomía máxima', value: '55 minutos' },
-      { label: 'Alcance operativo', value: '15 km' },
+      { label: 'Alcance operativo', value: '20 km' },
       { label: 'Resolución térmica', value: '640x512 px' },
       { label: 'Velocidad máxima', value: '82 km/h' }
     ],
@@ -159,11 +158,11 @@ Todos nuestros pilotos cuentan con certificación DGAC y más de 500 horas de vu
       { url: '/images/services/vigilancia-uav/4 drone.jpeg', alt: 'Monitoreo aéreo en vivo', type: 'image' }
     ],
     caseStudy: {
-      client: 'Complejo Agroindustrial Beta',
-      industry: 'Agroindustria - Cultivos de exportación',
-      challenge: 'Robos nocturnos sistemáticos de fruta premium. Perímetro de 3,200 hectáreas imposible de cubrir con vigilancia tradicional.',
+      client: 'CORPORACION SUMMA GOLD',
+      industry: 'MINERIA - MATERIAL AURIFERO',
+      challenge: 'Robos nocturnos sistemáticos de MATERIAL AURIFERO. Perímetro de 3,200 hectáreas DIFICIL de cubrir con vigilancia tradicional.',
       solution: 'Despliegue de 4 drones con visión térmica en patrullaje rotativo. Integración con alarmas perimetrales para respuesta automática.',
-      result: 'Detección de 23 intentos de intrusión en el primer mes. 100% de intercepciones exitosas. Reducción de pérdidas en $890,000 USD anuales.'
+      result: 'Detección de intentos de intrusión. 100% de intercepciones exitosas. Reducción de pérdidas anuales.'
     },
     benefits: [
       'Cobertura de grandes extensiones en minutos',
@@ -356,16 +355,16 @@ El tiempo es crítico en seguridad. Por eso garantizamos tiempos de respuesta in
     caseStudy: {
       client: 'Línea de Transmisión Eléctrica 220kV',
       industry: 'Energía - Transmisión eléctrica',
-      challenge: 'Robos sistemáticos de cable de cobre. Pérdidas de $1.8M USD en 2021. Tiempos de respuesta de seguridad anterior superiores a 40 minutos.',
-      solution: '3 equipos ERI pre-posicionados a lo largo de 180km de línea. Drones para patrullaje + sensores de vibración en torres críticas.',
-      result: '12 intercepciones exitosas en 6 meses. Recuperación del 89% del material en flagrancia. Reducción de pérdidas en 96%.'
+      challenge: 'ROBO DE MINERAL AURÍFERO',
+      solution: 'Drones para patrullaje + sensores mas cámaras y agentes replegados en puntos críticos.',
+      result: 'Captura exitosa de personas ajenas infiltradas en la mina. Reducción del 96% de intrusiones no autorizadas. Documentación en video de cada intervención para proceso legal.'
     },
     benefits: [
-      'Intercepciones en flagrancia para proceso penal',
-      'Recuperación de activos antes de su venta',
+      'Intercepciones en flagrancia',
+      'Recuperación de activos PATRIMONIALES',
       'Disuasión activa visible en la zona',
       'Documentación en video de cada intervención',
-      'Coordinación fluida con autoridades'
+      'Coordinación fluida Y EFECTIVA'
     ],
     relatedServices: ['vigilancia-aerea', 'centro-control', 'unidades-tacticas'],
     ctaText: 'EVALUAR COBERTURA',

@@ -366,7 +366,7 @@ const FeaturesGrid: React.FC<{ features: ServiceType['features'] }> = ({ feature
 // ============================================
 // SPECIFICATIONS - SYSTEM STATS
 // ============================================
-const SpecificationsPanel: React.FC<{ specs: ServiceType['specifications'] }> = ({ specs }) => {
+const SpecificationsPanel: React.FC<{ specs: ServiceType['specifications']; hideCards?: boolean }> = ({ specs, hideCards = false }) => {
   const containerRef = useStaggerReveal({ delay: 100, duration: 800 });
   const leftRef = useReveal({ direction: 'left', duration: 1000 });
 
@@ -391,7 +391,7 @@ const SpecificationsPanel: React.FC<{ specs: ServiceType['specifications'] }> = 
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+        <div className={`grid grid-cols-1 ${hideCards ? '' : 'lg:grid-cols-2'} gap-20 items-center`}>
           {/* Left: Title & Description */}
           <div ref={leftRef as React.RefObject<HTMLDivElement>}>
             <div className="inline-flex items-center gap-3 mb-4">
@@ -422,15 +422,17 @@ const SpecificationsPanel: React.FC<{ specs: ServiceType['specifications'] }> = 
             </div>
           </div>
 
-          {/* Right: Specs Grid */}
-          <div
-            ref={containerRef as React.RefObject<HTMLDivElement>}
-            className="grid grid-cols-2 gap-4"
-          >
-            {specs.map((spec, idx) => (
-              <SpecCard key={idx} spec={spec} index={idx} />
-            ))}
-          </div>
+          {/* Right: Specs Grid - hidden for specific services */}
+          {!hideCards && (
+            <div
+              ref={containerRef as React.RefObject<HTMLDivElement>}
+              className="grid grid-cols-2 gap-4"
+            >
+              {specs.map((spec, idx) => (
+                <SpecCard key={idx} spec={spec} index={idx} />
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
@@ -454,7 +456,6 @@ const SpecCard: React.FC<{ spec: { label: string; value: string }; index: number
       (entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
-            // Typing effect for value
             const text = spec.value;
             let current = 0;
             valueRef.current!.textContent = '';
@@ -482,12 +483,8 @@ const SpecCard: React.FC<{ spec: { label: string; value: string }; index: number
 
   return (
     <div className="p-6 bg-neutral-900/50 border border-neutral-800 relative overflow-hidden group hover:border-brand-500/30 transition-all duration-300">
-      {/* Left accent line */}
       <div className="absolute top-0 left-0 w-1 h-full bg-brand-500 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300" />
-
-      {/* Corner decoration */}
       <div className="absolute top-0 right-0 w-6 h-6 border-t border-r border-neutral-700 group-hover:border-brand-500/50 transition-colors" />
-
       <p className="text-neutral-500 text-xs uppercase tracking-wider mb-3 font-mono">
         {spec.label}
       </p>
@@ -497,8 +494,6 @@ const SpecCard: React.FC<{ spec: { label: string; value: string }; index: number
       >
         {spec.value}
       </p>
-
-      {/* Scan line effect */}
       <div className="absolute inset-0 bg-gradient-to-b from-brand-500/0 via-brand-500/5 to-brand-500/0 opacity-0 group-hover:opacity-100 transition-opacity"
            style={{ animation: 'scanVertical 2s linear infinite' }} />
     </div>
@@ -701,7 +696,7 @@ const GalleryItem: React.FC<{
 // ============================================
 // CASE STUDY - MISSION REPORT
 // ============================================
-const CaseStudySection: React.FC<{ caseStudy: ServiceType['caseStudy'] }> = ({ caseStudy }) => {
+const CaseStudySection: React.FC<{ caseStudy: ServiceType['caseStudy']; hideClientInfo?: boolean }> = ({ caseStudy, hideClientInfo = false }) => {
   const containerRef = useReveal({ direction: 'up', duration: 1000 });
   const timelineRef = useRef<HTMLDivElement>(null);
 
@@ -781,7 +776,7 @@ const CaseStudySection: React.FC<{ caseStudy: ServiceType['caseStudy'] }> = ({ c
           <Quote className="absolute top-6 right-6 w-20 h-20 text-brand-500/10" />
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-            {/* Client Info with Timeline */}
+            {/* Status with Timeline */}
             <div ref={timelineRef} className="relative lg:border-r border-neutral-800 pr-8">
               {/* Timeline */}
               <div className="absolute left-0 top-0 bottom-0 w-px bg-neutral-800">
@@ -789,17 +784,34 @@ const CaseStudySection: React.FC<{ caseStudy: ServiceType['caseStudy'] }> = ({ c
               </div>
 
               <div className="space-y-8 pl-6">
-                <div className="relative">
-                  <div className="timeline-dot absolute -left-8 top-1 w-4 h-4 bg-brand-500 rounded-full transform scale-0" />
-                  <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2 font-mono">Cliente</p>
-                  <p className="text-white font-display font-bold text-xl">{caseStudy.client}</p>
-                </div>
+                {hideClientInfo ? (
+                  <>
+                    <div className="relative">
+                      <div className="timeline-dot absolute -left-8 top-1 w-4 h-4 bg-brand-500 rounded-full transform scale-0" />
+                      <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2 font-mono">Caso Documentado</p>
+                      <p className="text-white font-display font-bold text-lg leading-snug">
+                        Captura de personas ajenas a la mina
+                      </p>
+                      <p className="text-neutral-400 text-sm mt-2 leading-relaxed">
+                        Intervención y detención de intrusos no autorizados en zona de operaciones mineras
+                      </p>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="relative">
+                      <div className="timeline-dot absolute -left-8 top-1 w-4 h-4 bg-brand-500 rounded-full transform scale-0" />
+                      <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2 font-mono">Cliente</p>
+                      <p className="text-white font-display font-bold text-xl">{caseStudy.client}</p>
+                    </div>
 
-                <div className="relative">
-                  <div className="timeline-dot absolute -left-8 top-1 w-4 h-4 bg-brand-500 rounded-full transform scale-0" />
-                  <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2 font-mono">Industria</p>
-                  <p className="text-brand-400">{caseStudy.industry}</p>
-                </div>
+                    <div className="relative">
+                      <div className="timeline-dot absolute -left-8 top-1 w-4 h-4 bg-brand-500 rounded-full transform scale-0" />
+                      <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2 font-mono">Industria</p>
+                      <p className="text-brand-400">{caseStudy.industry}</p>
+                    </div>
+                  </>
+                )}
 
                 <div className="relative">
                   <div className="timeline-dot absolute -left-8 top-1 w-4 h-4 bg-brand-500 rounded-full transform scale-0" />
@@ -812,7 +824,7 @@ const CaseStudySection: React.FC<{ caseStudy: ServiceType['caseStudy'] }> = ({ c
               </div>
             </div>
 
-            {/* Challenge & Solution */}
+            {/* Challenge, Solution & Result */}
             <div className="lg:col-span-2 space-y-8">
               <div className="p-6 bg-neutral-900/50 border-l-2 border-red-500/50">
                 <div className="flex items-center gap-2 mb-4">
@@ -868,14 +880,13 @@ const BenefitsSection: React.FC<{ benefits: string[] }> = ({ benefits }) => {
             </h2>
             <p className="text-neutral-400 leading-relaxed text-lg">
               Cada servicio de ADS Security viene respaldado por mas de una decada
-              de experiencia, certificaciones internacionales y un compromiso
+              de experiencia, certificaciones y un compromiso
               inquebrantable con la excelencia operativa.
             </p>
 
             {/* Stats */}
-            <div className="grid grid-cols-2 gap-6 mt-10">
+            <div className="grid grid-cols-1 gap-6 mt-10">
               <StatCounter value={15} suffix="+" label="Anos de Experiencia" />
-              <StatCounter value={500} suffix="+" label="Clientes Protegidos" />
             </div>
           </div>
 
@@ -1271,9 +1282,9 @@ const ServiceDetailPage: React.FC = () => {
       </section>
 
       <FeaturesGrid features={service.features} />
-      <SpecificationsPanel specs={service.specifications} />
+      <SpecificationsPanel specs={service.specifications} hideCards={service.slug === 'reaccion-inmediata'} />
       <GallerySection gallery={service.gallery} title={service.shortTitle} />
-      <CaseStudySection caseStudy={service.caseStudy} />
+      <CaseStudySection caseStudy={service.caseStudy} hideClientInfo={service.slug === 'reaccion-inmediata'} />
       <BenefitsSection benefits={service.benefits} />
       <RelatedServicesSection currentId={service.id} />
       <CTASection ctaText={service.ctaText} ctaSubtext={service.ctaSubtext} />
