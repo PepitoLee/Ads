@@ -8,7 +8,7 @@ const Footer: React.FC = () => {
         <div className="flex items-center gap-2">
            <Shield className="w-6 h-6 text-brand-600" />
            <span className="font-display font-bold text-neutral-500 tracking-wider">
-             ADS SECURITY &copy; 2024
+             ADS SECURITY &copy; 2026
            </span>
         </div>
         

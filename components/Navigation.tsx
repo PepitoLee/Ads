@@ -333,7 +333,7 @@ const Navigation: React.FC = () => {
 
                 {/* Copyright */}
                 <p className="font-mono text-[10px] text-neutral-600 text-center">
-                  © 2024 ADS SECURITY — CORPORACIÓN ÁGUILAS DEL SOL S.A.C.
+                  © 2026 ADS SECURITY — CORPORACIÓN ÁGUILAS DEL SOL S.A.C.
                 </p>
               </motion.div>
             </div>
