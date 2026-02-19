@@ -23,6 +23,12 @@ const Footer: React.FC = () => {
             RUC: <span className="text-neutral-400">20477208348</span>
         </div>
       </div>
+
+      <div className="max-w-7xl mx-auto mt-8 pt-6 border-t border-neutral-800/50 text-center">
+        <span className="text-[11px] text-neutral-700 font-mono tracking-wider">
+          Desarrollado por <a href="#" className="text-neutral-500 hover:text-brand-500 transition-colors duration-300">GACZ Developer</a>
+        </span>
+      </div>
     </footer>
   );
 };
