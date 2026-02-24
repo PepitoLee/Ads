@@ -154,7 +154,7 @@ const ServiceCard = ({ item, isMobile }: { item: typeof STRATEGIC_SERVICES[0], i
     return (
         <Link
             to={`/servicios/${item.slug}`}
-            className={`relative flex-shrink-0 group block ${isMobile ? 'w-[80vw] h-full' : 'w-[450px] h-full'}`}
+            className="relative group block w-full h-full"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
@@ -177,7 +177,7 @@ const ServiceCard = ({ item, isMobile }: { item: typeof STRATEGIC_SERVICES[0], i
                                     idx === currentImageIndex
                                         ? 'opacity-60 scale-100'
                                         : 'opacity-0 scale-105'
-                                } ${!isMobile && isHovered ? 'grayscale-0' : 'grayscale'}`}
+                                }`}
                             />
                         ))}
                         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
@@ -234,180 +234,292 @@ const ServiceCard = ({ item, isMobile }: { item: typeof STRATEGIC_SERVICES[0], i
 };
 
 export const HomeServices = () => {
-    const sectionRef = useRef<HTMLDivElement>(null);
-    const triggerRef = useRef<HTMLDivElement>(null);
-    const containerRef = useRef<HTMLDivElement>(null);
-    const progressBarRef = useRef<HTMLDivElement>(null);
+    const sectionRef = useRef<HTMLElement>(null);
+    const trackRef = useRef<HTMLDivElement>(null);
+    const isInView = useInView(sectionRef, { once: true, margin: '-100px' });
+    const totalCards = STRATEGIC_SERVICES.length;
+
     const [isMobile, setIsMobile] = useState(() =>
         typeof window !== 'undefined' ? window.innerWidth < 1024 : false
     );
-    const [isReady, setIsReady] = useState(false);
+    const [activeIndex, setActiveIndex] = useState(0);
+    const [scrollProgress, setScrollProgress] = useState(0);
+    const [isDragging, setIsDragging] = useState(false);
+    const dragState = useRef({ startX: 0, scrollLeft: 0, isDown: false, hasMoved: false });
 
     useEffect(() => {
-        const checkMobile = () => {
-            const mobile = window.innerWidth < 1024;
-            setIsMobile(mobile);
-        };
+        const checkMobile = () => setIsMobile(window.innerWidth < 1024);
         checkMobile();
-
-        // Mark as ready after a short delay to ensure DOM is measured correctly
-        const readyTimer = setTimeout(() => setIsReady(true), 200);
-
-        // Refresh ScrollTrigger on resize (important for orientation changes)
-        let resizeTimer: NodeJS.Timeout;
-        const handleResize = () => {
-            checkMobile();
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(() => {
-                ScrollTrigger.refresh();
-            }, 250);
-        };
-
-        window.addEventListener('resize', handleResize);
-        return () => {
-            window.removeEventListener('resize', handleResize);
-            clearTimeout(readyTimer);
-            clearTimeout(resizeTimer);
-        };
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
     }, []);
 
-    // GSAP horizontal scroll on vertical scroll - works on BOTH mobile and desktop
-    useLayoutEffect(() => {
-        if (!isReady) return;
+    // Derive active index and progress from scroll position
+    const handleScroll = () => {
+        const track = trackRef.current;
+        if (!track) return;
+        const maxScroll = track.scrollWidth - track.clientWidth;
+        if (maxScroll > 0) {
+            const progress = track.scrollLeft / maxScroll;
+            setScrollProgress(progress);
+            // Calculate which card is most centered/visible
+            if (isMobile) {
+                const cardWidth = track.clientWidth;
+                const idx = Math.round(track.scrollLeft / cardWidth);
+                setActiveIndex(Math.min(Math.max(idx, 0), totalCards - 1));
+            } else {
+                const cardWidth = 440 + 24; // card width + gap
+                const idx = Math.round(track.scrollLeft / cardWidth);
+                setActiveIndex(Math.min(Math.max(idx, 0), totalCards - 1));
+            }
+        }
+    };
 
-        let ctx: gsap.Context | null = null;
+    // Navigate to specific card index
+    const goToCard = (index: number) => {
+        const track = trackRef.current;
+        if (!track) return;
+        const clamped = Math.min(Math.max(index, 0), totalCards - 1);
+        if (isMobile) {
+            track.scrollTo({ left: clamped * track.clientWidth, behavior: 'smooth' });
+        } else {
+            const cardWidth = 440 + 24;
+            track.scrollTo({ left: clamped * cardWidth, behavior: 'smooth' });
+        }
+    };
 
-        // Longer delay for mobile to ensure DOM is fully ready
-        const timer = setTimeout(() => {
-            if (!containerRef.current || !triggerRef.current) return;
+    const scrollByDir = (direction: 'left' | 'right') => {
+        goToCard(direction === 'right' ? activeIndex + 1 : activeIndex - 1);
+    };
 
-            ctx = gsap.context(() => {
-                const container = containerRef.current!;
-                const trigger = triggerRef.current!;
+    // Mouse drag handlers for desktop
+    const onMouseDown = (e: React.MouseEvent) => {
+        const track = trackRef.current;
+        if (!track) return;
+        dragState.current = { isDown: true, startX: e.pageX - track.offsetLeft, scrollLeft: track.scrollLeft, hasMoved: false };
+        setIsDragging(false);
+    };
+    const onMouseMove = (e: React.MouseEvent) => {
+        if (!dragState.current.isDown) return;
+        e.preventDefault();
+        const track = trackRef.current;
+        if (!track) return;
+        const x = e.pageX - track.offsetLeft;
+        const walk = (x - dragState.current.startX) * 1.2;
+        if (Math.abs(walk) > 5) {
+            dragState.current.hasMoved = true;
+            setIsDragging(true);
+        }
+        track.scrollLeft = dragState.current.scrollLeft - walk;
+    };
+    const onMouseUp = () => {
+        dragState.current.isDown = false;
+        setTimeout(() => setIsDragging(false), 50);
+    };
 
-                // Force recalculation of dimensions
-                ScrollTrigger.refresh();
-
-                const scrollWidth = container.scrollWidth;
-                const viewportWidth = trigger.offsetWidth;
-                const distance = scrollWidth - viewportWidth;
-
-                if (distance <= 0) return;
-
-                // Horizontal Scroll - same experience on mobile and desktop
-                gsap.to(container, {
-                    x: -distance,
-                    ease: "none",
-                    scrollTrigger: {
-                        trigger: trigger,
-                        pin: true,
-                        pinSpacing: true,
-                        scrub: isMobile ? 1 : 0.5,
-                        start: "top top",
-                        end: () => "+=" + (distance * (isMobile ? 1.5 : 1.5)),
-                        invalidateOnRefresh: true,
-                        anticipatePin: 1,
-                        fastScrollEnd: true,
-                        preventOverlaps: true,
-                        onUpdate: (self) => {
-                            if (progressBarRef.current) {
-                                gsap.set(progressBarRef.current, { scaleX: self.progress });
-                            }
-                        }
-                    }
-                });
-
-                // Parallax Effect - only on desktop for performance
-                if (!isMobile) {
-                    gsap.utils.toArray(".parallax-bg").forEach((bg: any) => {
-                        gsap.to(bg, {
-                            xPercent: 15,
-                            ease: "none",
-                            scrollTrigger: {
-                                trigger: trigger,
-                                start: "top top",
-                                end: () => "+=" + (distance * 1.5),
-                                scrub: true,
-                                invalidateOnRefresh: true
-                            }
-                        });
-                    });
-                }
-
-            }, sectionRef);
-
-        }, isMobile ? 300 : 150);
-
-        return () => {
-            clearTimeout(timer);
-            if (ctx) ctx.revert();
-            ScrollTrigger.getAll().forEach(st => {
-                if (st.trigger === triggerRef.current) {
-                    st.kill();
-                }
-            });
-        };
-    }, [isMobile, isReady]);
+    // Formatted counter
+    const currentDisplay = String(activeIndex + 1).padStart(2, '0');
+    const totalDisplay = String(totalCards).padStart(2, '0');
 
     return (
-        <section ref={sectionRef} className="bg-black relative overflow-hidden">
-            <div ref={triggerRef} className="w-full h-screen flex flex-col relative">
+        <section ref={sectionRef} className="bg-black relative overflow-hidden py-20 md:py-32">
 
-                {/* --- GLOBAL BACKGROUND --- */}
-                <div className="absolute inset-0 z-0 opacity-20 pointer-events-none">
-                    <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-40 mix-blend-overlay" />
-                    <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:50px_50px]" />
-                    <div className="absolute top-1/2 left-0 w-full h-[1px] bg-brand-500/10" />
-                    <div className="absolute top-1/4 left-0 w-full h-[1px] bg-white/5" />
-                    <div className="absolute bottom-1/4 left-0 w-full h-[1px] bg-white/5" />
-                    <div className="absolute inset-0 bg-gradient-to-r from-black via-transparent to-black" />
-                </div>
-
-                {/* --- HEADER --- */}
-                <div className="absolute top-0 left-0 w-full z-40 p-6 md:p-12 pointer-events-none">
-                    <div className="flex justify-between items-start">
-                        <div>
-                            <div className="flex items-center gap-2 text-brand-500 font-mono text-xs mb-2">
-                                <ScanLine className="w-4 h-4 animate-pulse" />
-                                <span>PERIMETER_SCAN // ACTIVE</span>
-                            </div>
-                            <h2 className="text-3xl md:text-5xl font-display font-bold text-white uppercase shadow-black drop-shadow-md">
-                                Servicios Estratégicos
-                            </h2>
-                        </div>
-                    </div>
-                </div>
-
-                {/* --- HORIZONTAL TRACK --- */}
-                <div className="flex-grow flex items-center z-20 overflow-hidden pl-[5vw] pr-[20vw]">
-                    <div
-                        ref={containerRef}
-                        className="flex gap-4 md:gap-6 items-center h-[60vh] md:h-[70vh]"
-                        style={{ width: 'max-content' }}
-                    >
-                        {STRATEGIC_SERVICES.map((item) => (
-                            <ServiceCard key={item.id} item={item} isMobile={isMobile} />
-                        ))}
-                    </div>
-                </div>
-
-                {/* --- HUD FOOTER --- */}
-                <div className="absolute bottom-0 left-0 w-full z-30 bg-neutral-950 border-t border-neutral-800">
-                    <div className="w-full h-1 bg-neutral-800 relative">
-                        <div ref={progressBarRef} className="absolute top-0 left-0 h-full bg-brand-500 w-full origin-left scale-x-0" />
-                    </div>
-                    <div className="flex justify-between items-center px-6 md:px-12 py-4 font-mono text-xs text-neutral-500">
-                        <div className="flex gap-4 md:gap-8">
-                            <span className="hidden md:inline">SYSTEM STATUS: OPTIMAL</span>
-                            <span className="animate-pulse text-brand-500">● LIVE FEED</span>
-                        </div>
-                        <div>
-                            SCROLL TO NAVIGATE
-                        </div>
-                    </div>
-                </div>
-
+            {/* --- BACKGROUND LAYERS --- */}
+            <div className="absolute inset-0 z-0 pointer-events-none">
+                <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:60px_60px]" />
+                {/* Side vignettes */}
+                <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-black to-transparent" />
+                <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-black to-transparent" />
             </div>
+
+            {/* --- HEADER ROW --- */}
+            <div className="relative z-10 px-6 md:px-16 lg:px-20 mb-10 md:mb-14">
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={isInView ? { opacity: 1, y: 0 } : {}}
+                    transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                    className="flex flex-col md:flex-row md:items-end md:justify-between gap-6"
+                >
+                    {/* Left: Title block */}
+                    <div>
+                        <div className="flex items-center gap-2.5 text-brand-500 font-mono text-[11px] tracking-[0.2em] uppercase mb-3">
+                            <ScanLine className="w-4 h-4 animate-pulse" />
+                            <span className="opacity-80">PERIMETER_SCAN</span>
+                            <span className="text-neutral-600">//</span>
+                            <span className="text-brand-500">ACTIVE</span>
+                        </div>
+                        <h2 className="text-3xl md:text-5xl lg:text-6xl font-display font-bold text-white uppercase tracking-tight leading-[0.9]">
+                            Servicios<br className="hidden md:block" /> Estratégicos
+                        </h2>
+                    </div>
+
+                    {/* Right: HUD counter + arrows (desktop) */}
+                    <div className="flex items-center gap-6">
+                        {/* HUD Counter */}
+                        <motion.div
+                            initial={{ opacity: 0, x: 20 }}
+                            animate={isInView ? { opacity: 1, x: 0 } : {}}
+                            transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                            className="flex items-baseline gap-1 font-mono select-none"
+                        >
+                            <span className="text-3xl md:text-4xl font-bold text-brand-500 tabular-nums tracking-tight transition-all duration-300">
+                                {currentDisplay}
+                            </span>
+                            <span className="text-neutral-600 text-lg mx-1">/</span>
+                            <span className="text-lg text-neutral-600 tabular-nums">
+                                {totalDisplay}
+                            </span>
+                        </motion.div>
+
+                        {/* Arrow buttons - desktop */}
+                        <div className="hidden md:flex items-center gap-2">
+                            <button
+                                onClick={() => scrollByDir('left')}
+                                disabled={activeIndex === 0}
+                                className="w-12 h-12 border border-neutral-800 hover:border-brand-500 bg-neutral-900 hover:bg-brand-500/10 flex items-center justify-center text-neutral-500 hover:text-brand-500 transition-all duration-300 disabled:opacity-25 disabled:pointer-events-none"
+                                aria-label="Anterior"
+                            >
+                                <ChevronRight className="w-5 h-5 rotate-180" />
+                            </button>
+                            <button
+                                onClick={() => scrollByDir('right')}
+                                disabled={activeIndex === totalCards - 1}
+                                className="w-12 h-12 border border-neutral-800 hover:border-brand-500 bg-neutral-900 hover:bg-brand-500/10 flex items-center justify-center text-neutral-500 hover:text-brand-500 transition-all duration-300 disabled:opacity-25 disabled:pointer-events-none"
+                                aria-label="Siguiente"
+                            >
+                                <ChevronRight className="w-5 h-5" />
+                            </button>
+                        </div>
+                    </div>
+                </motion.div>
+            </div>
+
+            {/* --- CAROUSEL TRACK --- */}
+            <motion.div
+                initial={{ opacity: 0, y: 40 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+                className="relative z-10"
+            >
+                <div
+                    ref={trackRef}
+                    className={`flex overflow-x-auto scrollbar-hide select-none ${
+                        isMobile
+                            ? 'snap-x snap-mandatory gap-0 px-0'
+                            : 'gap-6 px-16 lg:px-20'
+                    }`}
+                    style={{
+                        cursor: !isMobile ? (isDragging ? 'grabbing' : 'grab') : undefined,
+                        WebkitOverflowScrolling: 'touch',
+                    }}
+                    onScroll={handleScroll}
+                    onMouseDown={!isMobile ? onMouseDown : undefined}
+                    onMouseMove={!isMobile ? onMouseMove : undefined}
+                    onMouseUp={!isMobile ? onMouseUp : undefined}
+                    onMouseLeave={!isMobile ? onMouseUp : undefined}
+                >
+                    {STRATEGIC_SERVICES.map((item, idx) => (
+                        <div
+                            key={item.id}
+                            className={`flex-shrink-0 ${
+                                isMobile
+                                    ? 'w-screen px-5 snap-center'
+                                    : 'w-[440px]'
+                            } h-[60vh] md:h-[65vh]`}
+                        >
+                            <motion.div
+                                className={`h-full ${isDragging ? 'pointer-events-none' : ''}`}
+                                initial={{ opacity: 0, y: 30 }}
+                                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                                transition={{ duration: 0.6, delay: 0.1 + idx * 0.08, ease: [0.16, 1, 0.3, 1] }}
+                            >
+                                <ServiceCard item={item} isMobile={isMobile} />
+                            </motion.div>
+                        </div>
+                    ))}
+                    {/* End spacer for desktop last card */}
+                    {!isMobile && <div className="flex-shrink-0 w-16 lg:w-20" />}
+                </div>
+            </motion.div>
+
+            {/* --- BOTTOM CONTROLS --- */}
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.7, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                className="relative z-10 mt-8 md:mt-12 px-6 md:px-16 lg:px-20"
+            >
+                {/* Progress bar */}
+                <div className="w-full h-[1px] bg-neutral-800 relative overflow-hidden">
+                    <div
+                        className="absolute top-0 left-0 h-full bg-gradient-to-r from-brand-600 via-brand-500 to-brand-400 transition-all duration-300 ease-out"
+                        style={{ width: `${Math.max(scrollProgress * 100, 2)}%` }}
+                    />
+                    {/* Glow on progress head */}
+                    <div
+                        className="absolute top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-brand-500 shadow-[0_0_8px_rgba(245,158,11,0.6)] transition-all duration-300 ease-out"
+                        style={{ left: `${Math.max(scrollProgress * 100, 1)}%` }}
+                    />
+                </div>
+
+                {/* Indicator dots (mobile) + status bar */}
+                <div className="flex items-center justify-between mt-5">
+                    {/* Left: Dot indicators on mobile, status on desktop */}
+                    <div className="flex items-center gap-3">
+                        {/* Mobile dot indicators */}
+                        <div className="flex md:hidden items-center gap-2">
+                            {STRATEGIC_SERVICES.map((_, idx) => (
+                                <button
+                                    key={idx}
+                                    onClick={() => goToCard(idx)}
+                                    aria-label={`Ir a servicio ${idx + 1}`}
+                                    className="group relative p-1"
+                                >
+                                    <span className={`block transition-all duration-300 ${
+                                        idx === activeIndex
+                                            ? 'w-7 h-[3px] bg-brand-500'
+                                            : 'w-[10px] h-[3px] bg-neutral-700 group-hover:bg-neutral-500'
+                                    }`} />
+                                </button>
+                            ))}
+                        </div>
+                        {/* Desktop status */}
+                        <div className="hidden md:flex items-center gap-5 font-mono text-[11px] tracking-wider text-neutral-500 uppercase">
+                            <span className="flex items-center gap-2">
+                                <span className="w-1.5 h-1.5 rounded-full bg-brand-500 animate-pulse" />
+                                <span className="text-brand-500/80">LIVE</span>
+                            </span>
+                            <span>SYS_STATUS: NOMINAL</span>
+                        </div>
+                    </div>
+
+                    {/* Center: Mobile arrows */}
+                    <div className="flex md:hidden items-center gap-2">
+                        <button
+                            onClick={() => scrollByDir('left')}
+                            disabled={activeIndex === 0}
+                            className="w-10 h-10 border border-neutral-800 bg-neutral-900 flex items-center justify-center text-neutral-500 hover:text-brand-500 hover:border-brand-500/50 transition-all disabled:opacity-20 disabled:pointer-events-none"
+                            aria-label="Anterior"
+                        >
+                            <ChevronRight className="w-4 h-4 rotate-180" />
+                        </button>
+                        <button
+                            onClick={() => scrollByDir('right')}
+                            disabled={activeIndex === totalCards - 1}
+                            className="w-10 h-10 border border-neutral-800 bg-neutral-900 flex items-center justify-center text-neutral-500 hover:text-brand-500 hover:border-brand-500/50 transition-all disabled:opacity-20 disabled:pointer-events-none"
+                            aria-label="Siguiente"
+                        >
+                            <ChevronRight className="w-4 h-4" />
+                        </button>
+                    </div>
+
+                    {/* Right: Scroll hint */}
+                    <div className="hidden md:flex items-center gap-2 font-mono text-[11px] tracking-wider text-neutral-400 uppercase">
+                        <span>ARRASTRE PARA NAVEGAR</span>
+                        <ArrowRight className="w-3 h-3 text-brand-600/60" />
+                    </div>
+                </div>
+            </motion.div>
 
             <style>{`
                 .stroke-text {
@@ -419,13 +531,6 @@ export const HomeServices = () => {
                 }
                 .scrollbar-hide::-webkit-scrollbar {
                     display: none;
-                }
-                /* Mobile touch scrolling fix */
-                @media (max-width: 1023px) {
-                    .pin-spacer {
-                        touch-action: pan-y !important;
-                        -webkit-overflow-scrolling: touch !important;
-                    }
                 }
             `}</style>
         </section>
@@ -494,8 +599,8 @@ const LiveCounter = ({ to, label }: { to: number, label: string }) => {
     return (
         <div className="flex flex-col">
             <div className="flex items-baseline gap-1">
-                <span ref={nodeRef} className="text-4xl md:text-5xl font-display font-bold text-white">0</span>
-                <span className="text-brand-500 font-bold text-2xl">+</span>
+                <span ref={nodeRef} className="text-4xl md:text-5xl font-display font-bold text-black">0</span>
+                <span className="text-brand-600 font-bold text-2xl">+</span>
             </div>
             <span className="font-mono text-xs text-neutral-500 uppercase tracking-widest">{label}</span>
         </div>
@@ -557,24 +662,24 @@ export const HomeAbout = () => {
     }, []);
 
     return (
-        <section ref={sectionRef} className="py-24 bg-black relative border-t border-neutral-900 overflow-hidden">
+        <section ref={sectionRef} className="py-24 bg-neutral-50 relative border-t border-neutral-200 overflow-hidden">
             {/* Background Grid */}
-            <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none" />
+            <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.03)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none" />
 
             <div className="max-w-7xl mx-auto px-4 relative z-10">
 
                 {/* --- HEADER --- */}
                 <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
                     <div>
-                        <div className="flex items-center gap-2 text-brand-500 font-mono text-xs tracking-widest uppercase mb-2">
+                        <div className="flex items-center gap-2 text-brand-600 font-mono text-xs tracking-widest uppercase mb-2">
                             <Terminal className="w-4 h-4" />
                             <DecryptedText text="SYSTEM_ANALYSIS // LIVE" />
                         </div>
-                        <h2 className="text-4xl md:text-6xl font-display font-bold text-white uppercase leading-none">
-                            <DecryptedText text="IDENTIDAD" /> <span className="text-neutral-600">OPERATIVA</span>
+                        <h2 className="text-4xl md:text-6xl font-display font-bold text-black uppercase leading-none">
+                            <DecryptedText text="IDENTIDAD" /> <span className="text-neutral-500">OPERATIVA</span>
                         </h2>
                     </div>
-                    <p className="text-neutral-400 max-w-md text-sm md:text-base border-l-2 border-brand-500 pl-4">
+                    <p className="text-neutral-600 max-w-md text-sm md:text-base border-l-2 border-brand-600 pl-4">
                         Transformamos la incertidumbre en datos procesables. Somos el estándar de seguridad para el sector industrial.
                     </p>
                 </div>
@@ -585,7 +690,7 @@ export const HomeAbout = () => {
                     {/* COL 1: THE FEED (Video Source) - Spans 7 cols */}
                     <div className="lg:col-span-7 relative group">
                         {/* Video Frame */}
-                        <div className="relative w-full aspect-video bg-neutral-900 overflow-hidden clip-path-corner border border-neutral-800 group-hover:border-brand-500/30 transition-colors">
+                        <div className="relative w-full aspect-video bg-black overflow-hidden clip-path-corner border border-neutral-800 group-hover:border-brand-500/50 transition-colors">
                             <video
                                 ref={videoRef}
                                 src="/videos/ads-intro.mp4"
@@ -622,24 +727,24 @@ export const HomeAbout = () => {
                         </div>
 
                         {/* Connection Points (Desktop Only) */}
-                        <div className="hidden lg:block absolute top-1/4 -right-8 w-8 h-[1px] bg-neutral-700 circuit-line origin-left" />
-                        <div className="hidden lg:block absolute bottom-1/4 -right-8 w-8 h-[1px] bg-neutral-700 circuit-line origin-left" />
+                        <div className="hidden lg:block absolute top-1/4 -right-8 w-8 h-[1px] bg-neutral-300 circuit-line origin-left" />
+                        <div className="hidden lg:block absolute bottom-1/4 -right-8 w-8 h-[1px] bg-neutral-300 circuit-line origin-left" />
                     </div>
 
                     {/* COL 2: THE ANALYSIS (Data) - Spans 5 cols */}
                     <div className="lg:col-span-5 data-panel flex flex-col justify-center lg:pl-8 space-y-8 relative">
                         {/* Vertical Line Connector */}
-                        <div className="hidden lg:block absolute left-0 top-1/4 bottom-1/4 w-[1px] bg-neutral-800" />
+                        <div className="hidden lg:block absolute left-0 top-1/4 bottom-1/4 w-[1px] bg-neutral-300" />
 
                         {/* Stat Block 1: Agents */}
-                        <div className="relative pl-6 lg:pl-8 border-l border-neutral-800 lg:border-none">
-                            <div className="hidden lg:block absolute top-1/2 -left-8 w-8 h-[1px] bg-neutral-700 circuit-line origin-left" />
-                            <div className="flex items-center gap-3 mb-2 text-brand-500">
+                        <div className="relative pl-6 lg:pl-8 border-l border-neutral-300 lg:border-none">
+                            <div className="hidden lg:block absolute top-1/2 -left-8 w-8 h-[1px] bg-neutral-300 circuit-line origin-left" />
+                            <div className="flex items-center gap-3 mb-2 text-brand-600">
                                 <Users className="w-5 h-5" />
                                 <h4 className="font-display font-bold uppercase tracking-wider text-sm">Fuerza Operativa</h4>
                             </div>
                             <LiveCounter to={140} label="Agentes Desplegados" />
-                            <div className="mt-2 w-full h-1 bg-neutral-900 rounded-full overflow-hidden">
+                            <div className="mt-2 w-full h-1 bg-neutral-200 rounded-full overflow-hidden">
                                 <motion.div
                                     initial={{ width: 0 }}
                                     whileInView={{ width: "85%" }}
@@ -650,15 +755,15 @@ export const HomeAbout = () => {
                         </div>
 
                         {/* Stat Block 2: RNP */}
-                        <div className="relative pl-6 lg:pl-8 border-l border-neutral-800 lg:border-none">
-                            <div className="hidden lg:block absolute top-1/2 -left-8 w-8 h-[1px] bg-neutral-700 circuit-line origin-left" />
-                            <div className="flex items-center gap-3 mb-2 text-brand-500">
+                        <div className="relative pl-6 lg:pl-8 border-l border-neutral-300 lg:border-none">
+                            <div className="hidden lg:block absolute top-1/2 -left-8 w-8 h-[1px] bg-neutral-300 circuit-line origin-left" />
+                            <div className="flex items-center gap-3 mb-2 text-brand-600">
                                 <Fingerprint className="w-5 h-5" />
                                 <h4 className="font-display font-bold uppercase tracking-wider text-sm">Validación Estatal</h4>
                             </div>
                             <div className="flex items-center gap-4">
-                                <span className="text-4xl font-display font-bold text-white">RNP</span>
-                                <div className="px-3 py-1 bg-green-900/20 border border-green-500/30 text-green-500 text-xs font-bold uppercase flex items-center gap-2">
+                                <span className="text-4xl font-display font-bold text-black">RNP</span>
+                                <div className="px-3 py-1 bg-green-50 border border-green-300 text-green-700 text-xs font-bold uppercase flex items-center gap-2">
                                     <CheckCircle2 className="w-3 h-3" /> Verificado
                                 </div>
                             </div>
@@ -669,14 +774,14 @@ export const HomeAbout = () => {
 
                         {/* Action Button */}
                         <div className="pl-6 lg:pl-8 pt-4">
-                            <Link to="/nosotros" className="group relative inline-flex items-center justify-center px-8 py-4 bg-neutral-900 border border-neutral-700 hover:border-brand-500 transition-all overflow-hidden clip-path-btn">
-                                <div className="absolute inset-0 bg-brand-500/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+                            <Link to="/nosotros" className="group relative inline-flex items-center justify-center px-8 py-4 bg-neutral-900 border border-neutral-800 hover:border-brand-500 transition-all overflow-hidden clip-path-btn">
+                                <div className="absolute inset-0 bg-brand-500/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
                                 <span className="relative font-display font-bold text-white uppercase tracking-widest text-sm flex items-center gap-2">
-                                    <Activity className="w-4 h-4 text-brand-500" />
+                                    <Activity className="w-4 h-4 text-brand-400" />
                                     Acceso Total
                                 </span>
                                 {/* Small LED */}
-                                <div className="absolute top-2 right-2 w-1 h-1 bg-neutral-700 group-hover:bg-green-500 transition-colors rounded-full" />
+                                <div className="absolute top-2 right-2 w-1 h-1 bg-neutral-600 group-hover:bg-green-500 transition-colors rounded-full" />
                             </Link>
                         </div>
                     </div>
@@ -731,11 +836,12 @@ export const HomeHistory = () => {
     const sectionRef = useRef<HTMLDivElement>(null);
 
     return (
-        <section ref={sectionRef} className="py-32 bg-black relative overflow-hidden border-t border-neutral-900">
+        <section ref={sectionRef} className="py-32 bg-black relative overflow-hidden">
             {/* ATMOSPHERE */}
             <div className="absolute inset-0 pointer-events-none">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.05)_0%,transparent_70%)] opacity-50" />
-                <div className="absolute top-0 w-full h-px bg-gradient-to-r from-transparent via-brand-500/50 to-transparent" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(245,158,11,0.04)_0%,transparent_70%)]" />
+                <div className="absolute top-0 w-full h-px bg-gradient-to-r from-transparent via-brand-500/30 to-transparent" />
+                <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:40px_40px]" />
             </div>
 
             <div className="max-w-[1400px] mx-auto px-6 relative z-10 flex flex-col lg:flex-row items-center justify-between gap-20">
@@ -751,9 +857,9 @@ export const HomeHistory = () => {
                         <span className="font-mono text-xs text-brand-500 tracking-[0.3em] uppercase">Temporal_Sequence // Active</span>
                     </div>
 
-                    <h2 className="text-6xl md:text-8xl font-display font-bold text-white uppercase leading-[0.85] mb-8 mix-blend-difference">
+                    <h2 className="text-6xl md:text-8xl font-display font-bold text-white uppercase leading-[0.85] mb-8">
                         LEGADO<br />
-                        <span className="text-transparent stroke-text-bold">TÁCTICO</span>
+                        <span className="text-neutral-700 stroke-text-bold">TÁCTICO</span>
                     </h2>
 
                     <p className="text-neutral-400 text-lg leading-relaxed max-w-xl border-l-2 border-brand-500 pl-6 mb-12">
@@ -876,39 +982,38 @@ const HoloCardV2 = ({ title, type, serial, delay }: { title: string, type: strin
             transition={{ duration: 0.4, delay: delay }}
             className="relative h-64 w-full group select-none"
         >
-            <div className="absolute inset-0 bg-neutral-900 border border-neutral-800 transition-all duration-300 group-hover:border-brand-500/50">
+            <div className="absolute inset-0 bg-neutral-50 border border-neutral-200 transition-all duration-300 group-hover:border-brand-500/50 group-hover:shadow-[0_0_30px_rgba(245,158,11,0.1)]">
 
-                {/* 1. INTERNAL NOISE & GRID */}
-                <div className="absolute inset-0 opacity-20 pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay" />
-                <div className="absolute inset-0 opacity-10 pointer-events-none bg-[linear-gradient(0deg,transparent_24%,rgba(56,189,248,0.3)_25%,rgba(56,189,248,0.3)_26%,transparent_27%,transparent_74%,rgba(56,189,248,0.3)_75%,rgba(56,189,248,0.3)_76%,transparent_77%,transparent),linear-gradient(90deg,transparent_24%,rgba(56,189,248,0.3)_25%,rgba(56,189,248,0.3)_26%,transparent_27%,transparent_74%,rgba(56,189,248,0.3)_75%,rgba(56,189,248,0.3)_76%,transparent_77%,transparent)] bg-[size:30px_30px]" />
+                {/* 1. SUBTLE GRID */}
+                <div className="absolute inset-0 opacity-30 pointer-events-none bg-[linear-gradient(0deg,transparent_24%,rgba(0,0,0,0.04)_25%,rgba(0,0,0,0.04)_26%,transparent_27%,transparent_74%,rgba(0,0,0,0.04)_75%,rgba(0,0,0,0.04)_76%,transparent_77%,transparent),linear-gradient(90deg,transparent_24%,rgba(0,0,0,0.04)_25%,rgba(0,0,0,0.04)_26%,transparent_27%,transparent_74%,rgba(0,0,0,0.04)_75%,rgba(0,0,0,0.04)_76%,transparent_77%,transparent)] bg-[size:30px_30px]" />
 
-                {/* 2. HOVER SCANLINE FILL */}
-                <div className="absolute inset-0 bg-brand-500/10 scale-y-0 origin-bottom group-hover:scale-y-100 transition-transform duration-500 ease-in-out" />
+                {/* 2. HOVER FILL */}
+                <div className="absolute inset-0 bg-brand-500/5 scale-y-0 origin-bottom group-hover:scale-y-100 transition-transform duration-500 ease-in-out" />
 
                 {/* 3. CONTENT LAYOUT */}
                 <div className="absolute inset-0 p-6 flex flex-col justify-between z-10">
                     {/* Top Meta */}
                     <div className="flex justify-between items-start font-mono text-neutral-500">
-                        <span className="text-[10px] group-hover:text-brand-500 transition-colors">//{type}</span>
-                        <span className={`border border-neutral-800 px-2 group-hover:border-brand-500 transition-colors ${type === 'TAX_REG' ? 'text-lg font-bold text-brand-500' : 'text-[10px]'}`}>{serial}</span>
+                        <span className="text-[10px] group-hover:text-brand-600 transition-colors">//{type}</span>
+                        <span className={`border border-neutral-300 px-2 group-hover:border-brand-500 transition-colors ${type === 'TAX_REG' ? 'text-lg font-bold text-brand-600' : 'text-[10px] text-neutral-500'}`}>{serial}</span>
                     </div>
 
                     {/* Center Graphic/Icon (Abstract) */}
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 border border-neutral-800 rounded-full flex items-center justify-center group-hover:scale-110 group-hover:border-brand-500 transition-all duration-500">
-                        <div className="w-1 h-1 bg-neutral-600 group-hover:bg-brand-500 rounded-full" />
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 border border-neutral-300 rounded-full flex items-center justify-center group-hover:scale-110 group-hover:border-brand-500 transition-all duration-500">
+                        <div className="w-1 h-1 bg-neutral-400 group-hover:bg-brand-500 rounded-full" />
                         <div className="absolute inset-0 border-t border-brand-500/30 animate-spin-slow opacity-0 group-hover:opacity-100" />
                     </div>
 
                     {/* Bottom Title */}
                     <div>
-                        <GlitchText text={title} className="font-display font-bold text-2xl text-white uppercase" />
-                        <div className="mt-2 h-[2px] w-8 bg-neutral-700 group-hover:w-full group-hover:bg-brand-500 transition-all duration-500" />
+                        <GlitchText text={title} className="font-display font-bold text-2xl text-black uppercase" />
+                        <div className="mt-2 h-[2px] w-8 bg-neutral-300 group-hover:w-full group-hover:bg-brand-500 transition-all duration-500" />
                     </div>
                 </div>
 
                 {/* 4. CORNER DECORATORS */}
-                <div className="absolute -top-[1px] -left-[1px] w-4 h-4 border-l-2 border-t-2 border-neutral-700 group-hover:border-brand-500 transition-colors" />
-                <div className="absolute -bottom-[1px] -right-[1px] w-4 h-4 border-r-2 border-b-2 border-neutral-700 group-hover:border-brand-500 transition-colors" />
+                <div className="absolute -top-[1px] -left-[1px] w-4 h-4 border-l-2 border-t-2 border-neutral-300 group-hover:border-brand-500 transition-colors" />
+                <div className="absolute -bottom-[1px] -right-[1px] w-4 h-4 border-r-2 border-b-2 border-neutral-300 group-hover:border-brand-500 transition-colors" />
             </div>
         </motion.div>
     );
@@ -916,40 +1021,36 @@ const HoloCardV2 = ({ title, type, serial, delay }: { title: string, type: strin
 
 export const HomeDocs = () => {
     return (
-        <section className="py-24 bg-black relative overflow-hidden border-t border-neutral-900">
-            {/* --- CYBER ATMOSPHERE --- */}
+        <section className="py-24 bg-white relative overflow-hidden">
+            {/* --- SUBTLE ATMOSPHERE --- */}
             <div className="absolute inset-0 pointer-events-none">
-                {/* Global Scanline */}
-                <div className="absolute inset-0 w-full h-full bg-[linear-gradient(to_bottom,transparent_50%,rgba(0,0,0,0.5)_51%)] bg-[size:100%_4px] z-20 pointer-events-none" />
-                <div className="absolute top-0 left-0 w-full h-[100px] bg-gradient-to-b from-brand-500/10 to-transparent animate-scan-global z-20 pointer-events-none" />
-
-                {/* Noise */}
-                <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay z-10" />
+                {/* Subtle grid */}
+                <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.03)_1px,transparent_1px)] bg-[size:40px_40px]" />
             </div>
 
             <div className="relative z-30 max-w-[1400px] mx-auto px-6">
 
                 {/* HEADER LAYOUT: ASYMMETRIC */}
-                <div className="flex flex-col md:flex-row items-end justify-between mb-24 border-b border-neutral-800 pb-8 relative">
+                <div className="flex flex-col md:flex-row items-end justify-between mb-24 border-b border-neutral-200 pb-8 relative">
                     <div className="relative">
-                        <div className="absolute -left-12 top-0 bottom-0 w-1 bg-brand-500 hidden md:block" />
+                        <div className="absolute -left-12 top-0 bottom-0 w-1 bg-brand-600 hidden md:block" />
                         <div className="flex items-center gap-2 mb-4">
-                            <div className="w-2 h-2 bg-brand-500 animate-pulse" />
-                            <span className="font-mono text-xs text-brand-500 tracking-widest">DATA_VAULT_ACCESS</span>
+                            <div className="w-2 h-2 bg-brand-600 animate-pulse" />
+                            <span className="font-mono text-xs text-brand-600 tracking-widest">DATA_VAULT_ACCESS</span>
                         </div>
-                        <h2 className="text-6xl md:text-8xl font-display font-bold text-white leading-[0.8] tracking-tighter mix-blend-difference">
-                            ARCHIVO<br /><span className="text-neutral-800 text-stroke-white">SEGURO</span>
+                        <h2 className="text-6xl md:text-8xl font-display font-bold text-black leading-[0.8] tracking-tighter">
+                            ARCHIVO<br /><span className="text-neutral-300 text-stroke-dark">SEGURO</span>
                         </h2>
                     </div>
 
                     <div className="md:text-right mt-8 md:mt-0 font-mono text-xs text-neutral-500 space-y-2">
                         <p>ENCRYPTION: AES-256-GCM</p>
-                        <p>STATUS: <span className="text-green-500">ONLINE</span></p>
+                        <p>STATUS: <span className="text-green-600">ONLINE</span></p>
                         <p>LATENCY: 4ms</p>
                     </div>
 
                     {/* Decorative Code Block */}
-                    <div className="absolute -right-4 -bottom-4 font-mono text-[10px] text-neutral-800 opacity-50 hidden xl:block text-right">
+                    <div className="absolute -right-4 -bottom-4 font-mono text-[10px] text-neutral-300 opacity-50 hidden xl:block text-right">
                         0x4F 0x4B 0x00<br />0x1A 0xB2 0xFF
                     </div>
                 </div>
@@ -962,8 +1063,8 @@ export const HomeDocs = () => {
                 </div>
 
                 {/* BOTTOM MARQUEE */}
-                <div className="mt-24 border-t border-neutral-800 pt-4 flex justify-between items-center overflow-hidden">
-                    <div className="font-mono text-[10px] text-neutral-600 flex gap-8 whitespace-nowrap animate-marquee">
+                <div className="mt-24 border-t border-neutral-200 pt-4 flex justify-between items-center overflow-hidden">
+                    <div className="font-mono text-[10px] text-neutral-400 flex gap-8 whitespace-nowrap animate-marquee">
                         {Array(10).fill("RESTRICTED AREA /// AUTHORIZED PERSONNEL ONLY /// ").map((t, i) => (
                             <span key={i}>{t}</span>
                         ))}
@@ -974,6 +1075,9 @@ export const HomeDocs = () => {
             <style>{`
                 .text-stroke-white {
                     -webkit-text-stroke: 1px rgba(255,255,255,0.8);
+                }
+                .text-stroke-dark {
+                    -webkit-text-stroke: 2px rgba(0,0,0,0.15);
                 }
                 @keyframes scan-global {
                     0% { transform: translateY(-100%); opacity: 0; }
@@ -1004,11 +1108,12 @@ export const HomeDocs = () => {
 // --- 4. CONTACT: UPLINK ---
 export const HomeContact = () => {
     return (
-        <section className="py-24 bg-brand-600 relative overflow-hidden">
-            <div className="absolute inset-0 bg-black opacity-90" /> {/* Darken brand color significantly */}
+        <section className="py-24 bg-neutral-900 relative overflow-hidden">
+            {/* Subtle gold gradient accent */}
+            <div className="absolute inset-0 bg-gradient-to-br from-brand-900/20 via-transparent to-brand-900/10" />
 
             {/* Decorative Map Texture */}
-            <div className="absolute inset-0 bg-[url('https://upload.wikimedia.org/wikipedia/commons/e/ec/World_map_blank_without_borders.svg')] opacity-10 bg-fixed bg-cover mix-blend-overlay" />
+            <div className="absolute inset-0 bg-[url('https://upload.wikimedia.org/wikipedia/commons/e/ec/World_map_blank_without_borders.svg')] opacity-5 bg-fixed bg-cover" />
 
             <div className="relative z-10 max-w-5xl mx-auto px-4 text-center">
                 <h2 className="text-5xl md:text-7xl font-display font-bold text-white mb-8 tracking-tighter">

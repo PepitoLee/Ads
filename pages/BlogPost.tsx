@@ -153,7 +153,7 @@ const ArticleBody: React.FC<{ post: BlogPostType }> = ({ post }) => {
   const bodyRef = useReveal({ direction: 'up', duration: 800 });
 
   return (
-    <section className="py-20 bg-black relative">
+    <section className="py-20 bg-white relative">
       <div className="absolute inset-0 opacity-[0.02]">
         <div
           className="w-full h-full"
@@ -167,11 +167,11 @@ const ArticleBody: React.FC<{ post: BlogPostType }> = ({ post }) => {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div ref={bodyRef as React.RefObject<HTMLDivElement>}>
           {/* Tags */}
-          <div className="flex flex-wrap gap-2 mb-10 pb-8 border-b border-neutral-800">
+          <div className="flex flex-wrap gap-2 mb-10 pb-8 border-b border-neutral-200">
             {post.tags.map((tag) => (
               <span
                 key={tag}
-                className="flex items-center gap-1.5 text-xs text-neutral-400 border border-neutral-700 px-3 py-1 font-mono hover:border-brand-500/50 hover:text-brand-400 transition-colors"
+                className="flex items-center gap-1.5 text-xs text-neutral-500 border border-neutral-300 px-3 py-1 font-mono hover:border-brand-500/50 hover:text-brand-600 transition-colors"
               >
                 <Tag className="w-3 h-3" />
                 {tag}
@@ -180,11 +180,11 @@ const ArticleBody: React.FC<{ post: BlogPostType }> = ({ post }) => {
           </div>
 
           {/* Body Paragraphs */}
-          <div className="prose prose-invert prose-lg max-w-none">
+          <div className="prose prose-lg max-w-none">
             {post.body.split('\n\n').map((paragraph, idx) => (
               <p
                 key={idx}
-                className="text-neutral-300 leading-relaxed mb-6 first-letter:text-4xl first-letter:font-display first-letter:text-brand-500 first-letter:mr-1"
+                className="text-neutral-700 leading-relaxed mb-6 first-letter:text-4xl first-letter:font-display first-letter:text-brand-600 first-letter:mr-1"
               >
                 {paragraph}
               </p>
@@ -193,12 +193,12 @@ const ArticleBody: React.FC<{ post: BlogPostType }> = ({ post }) => {
         </div>
 
         {/* Author Card */}
-        <div className="mt-16 p-6 bg-neutral-900/50 border border-neutral-800 flex items-center gap-6">
+        <div className="mt-16 p-6 bg-neutral-50 border border-neutral-200 flex items-center gap-6">
           <div className="w-16 h-16 bg-brand-500/20 border border-brand-500/40 flex items-center justify-center flex-shrink-0">
             <User className="w-8 h-8 text-brand-500" />
           </div>
           <div>
-            <p className="text-white font-display font-bold uppercase">{post.author.name}</p>
+            <p className="text-black font-display font-bold uppercase">{post.author.name}</p>
             <p className="text-neutral-500 text-sm">{post.author.role} — ADS Security</p>
           </div>
         </div>
@@ -217,13 +217,13 @@ const RelatedPostsSection: React.FC<{ postId: string }> = ({ postId }) => {
   if (relatedPosts.length === 0) return null;
 
   return (
-    <section className="py-24 bg-neutral-950">
+    <section className="py-24 bg-neutral-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <span className="text-brand-500 text-sm font-display uppercase tracking-[0.3em]">
+          <span className="text-brand-600 text-sm font-display uppercase tracking-[0.3em]">
             Sigue leyendo
           </span>
-          <h2 className="mt-4 text-4xl font-display font-bold text-white uppercase tracking-tight">
+          <h2 className="mt-4 text-4xl font-display font-bold text-black uppercase tracking-tight">
             Artículos Relacionados
           </h2>
         </div>
@@ -286,7 +286,7 @@ const BlogCTA: React.FC = () => {
   const containerRef = useReveal({ direction: 'up', duration: 1000 });
 
   return (
-    <section className="py-24 bg-gradient-to-b from-neutral-950 to-black relative overflow-hidden">
+    <section className="py-24 bg-gradient-to-b from-neutral-50 to-white relative overflow-hidden">
       <div className="absolute inset-0">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-brand-500/10 rounded-full blur-[120px]" />
       </div>
@@ -305,10 +305,10 @@ const BlogCTA: React.FC = () => {
         className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10"
       >
         <Shield className="w-12 h-12 text-brand-500 mx-auto mb-6" />
-        <h2 className="text-3xl md:text-4xl font-display font-bold text-white uppercase tracking-tight mb-4">
+        <h2 className="text-3xl md:text-4xl font-display font-bold text-black uppercase tracking-tight mb-4">
           ¿Necesita estos servicios?
         </h2>
-        <p className="text-neutral-400 mb-10 leading-relaxed">
+        <p className="text-neutral-600 mb-10 leading-relaxed">
           Nuestro equipo de especialistas está listo para diseñar una solución de seguridad a la medida de su operación.
         </p>
 

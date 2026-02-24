@@ -277,7 +277,7 @@ const TiltCard: React.FC<{
     <div ref={cardRef}>
       <div
         ref={tiltRef as React.RefObject<HTMLDivElement>}
-        className="group relative p-8 bg-neutral-900/50 border border-neutral-800 hover:border-brand-500/50 transition-all duration-500 cursor-pointer overflow-hidden"
+        className="group relative p-8 bg-white/60 border border-neutral-200 hover:border-brand-500/50 transition-all duration-500 cursor-pointer overflow-hidden"
         style={{ transformStyle: 'preserve-3d' }}
       >
         {/* Number Badge */}
@@ -303,13 +303,13 @@ const TiltCard: React.FC<{
         </svg>
 
         <h3
-          className="text-xl font-display font-bold text-white uppercase mb-4 pl-8 group-hover:text-brand-400 transition-colors"
+          className="text-xl font-display font-bold text-black uppercase mb-4 pl-8 group-hover:text-brand-400 transition-colors"
           style={{ transform: 'translateZ(20px)' }}
         >
           {feature.title}
         </h3>
         <p
-          className="text-neutral-400 leading-relaxed"
+          className="text-neutral-600 leading-relaxed"
           style={{ transform: 'translateZ(10px)' }}
         >
           {feature.description}
@@ -330,7 +330,7 @@ const FeaturesGrid: React.FC<{ features: ServiceType['features'] }> = ({ feature
   const titleRef = useReveal({ direction: 'up', duration: 800 });
 
   return (
-    <section className="py-24 bg-neutral-950 relative overflow-hidden">
+    <section className="py-24 bg-white relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-[0.02]">
         <div className="w-full h-full" style={{
@@ -348,7 +348,7 @@ const FeaturesGrid: React.FC<{ features: ServiceType['features'] }> = ({ feature
             </span>
             <div className="w-8 h-[1px] bg-brand-500" />
           </div>
-          <h2 className="text-4xl md:text-5xl font-display font-bold text-white uppercase tracking-tight">
+          <h2 className="text-4xl md:text-5xl font-display font-bold text-black uppercase tracking-tight">
             Modulos del Sistema
           </h2>
         </div>
@@ -371,7 +371,7 @@ const SpecificationsPanel: React.FC<{ specs: ServiceType['specifications']; hide
   const leftRef = useReveal({ direction: 'left', duration: 1000 });
 
   return (
-    <section className="py-24 bg-black relative overflow-hidden">
+    <section className="py-24 bg-white relative overflow-hidden">
       {/* Hex Background */}
       <div className="absolute inset-0 opacity-[0.03]">
         {[...Array(20)].map((_, i) => (
@@ -400,23 +400,23 @@ const SpecificationsPanel: React.FC<{ specs: ServiceType['specifications']; hide
                 Datos Tecnicos
               </span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-display font-bold text-white uppercase mb-8 tracking-tight">
+            <h2 className="text-4xl md:text-5xl font-display font-bold text-black uppercase mb-8 tracking-tight">
               Especificaciones
             </h2>
-            <p className="text-neutral-400 leading-relaxed text-lg mb-10">
+            <p className="text-neutral-600 leading-relaxed text-lg mb-10">
               Nuestros servicios cuentan con los mas altos estandares de calidad
               y equipamiento de ultima generacion para garantizar resultados
               excepcionales en cada operacion.
             </p>
 
             {/* Certification Badge */}
-            <div className="flex items-center gap-6 p-6 bg-neutral-900/50 border border-neutral-800">
+            <div className="flex items-center gap-6 p-6 bg-white/60 border border-neutral-200">
               <div className="w-20 h-20 border-2 border-brand-500 flex items-center justify-center relative">
                 <Target className="w-10 h-10 text-brand-500" />
                 <div className="absolute -top-1 -right-1 w-3 h-3 bg-brand-500" />
               </div>
               <div>
-                <p className="text-white font-display font-bold uppercase text-lg">Precision Operativa</p>
+                <p className="text-black font-display font-bold uppercase text-lg">Precision Operativa</p>
                 <p className="text-neutral-500 text-sm font-mono">ISO 27001:2022 CERTIFIED</p>
               </div>
             </div>
@@ -482,15 +482,15 @@ const SpecCard: React.FC<{ spec: { label: string; value: string }; index: number
   }, [spec.value]);
 
   return (
-    <div className="p-6 bg-neutral-900/50 border border-neutral-800 relative overflow-hidden group hover:border-brand-500/30 transition-all duration-300">
+    <div className="p-6 bg-white/60 border border-neutral-200 relative overflow-hidden group hover:border-brand-500/30 transition-all duration-300">
       <div className="absolute top-0 left-0 w-1 h-full bg-brand-500 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300" />
-      <div className="absolute top-0 right-0 w-6 h-6 border-t border-r border-neutral-700 group-hover:border-brand-500/50 transition-colors" />
+      <div className="absolute top-0 right-0 w-6 h-6 border-t border-r border-neutral-300 group-hover:border-brand-500/50 transition-colors" />
       <p className="text-neutral-500 text-xs uppercase tracking-wider mb-3 font-mono">
         {spec.label}
       </p>
       <p
         ref={valueRef}
-        className="text-white font-display font-bold text-lg"
+        className="text-black font-display font-bold text-lg"
       >
         {spec.value}
       </p>
@@ -520,7 +520,7 @@ const GallerySection: React.FC<{ gallery: ServiceType['gallery'], title: string 
 
   return (
     <>
-      <section className="py-24 bg-neutral-950 relative overflow-hidden">
+      <section className="py-24 bg-white relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div ref={titleRef as React.RefObject<HTMLDivElement>} className="text-center mb-16">
             <div className="inline-flex items-center gap-3 mb-4">
@@ -529,7 +529,7 @@ const GallerySection: React.FC<{ gallery: ServiceType['gallery'], title: string 
                 Feed de Vigilancia
               </span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-display font-bold text-white uppercase tracking-tight">
+            <h2 className="text-4xl md:text-5xl font-display font-bold text-black uppercase tracking-tight">
               {title} en Accion
             </h2>
           </div>
@@ -736,7 +736,7 @@ const CaseStudySection: React.FC<{ caseStudy: ServiceType['caseStudy']; hideClie
   }, []);
 
   return (
-    <section className="py-24 bg-black relative overflow-hidden">
+    <section className="py-24 bg-white relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute inset-0" style={{
@@ -763,23 +763,23 @@ const CaseStudySection: React.FC<{ caseStudy: ServiceType['caseStudy']; hideClie
             </span>
             <div className="w-8 h-[1px] bg-brand-500" />
           </div>
-          <h2 className="text-4xl md:text-5xl font-display font-bold text-white uppercase tracking-tight">
+          <h2 className="text-4xl md:text-5xl font-display font-bold text-black uppercase tracking-tight">
             Caso de Exito
           </h2>
         </div>
 
         <div
           ref={containerRef as React.RefObject<HTMLDivElement>}
-          className="bg-neutral-900/80 border border-neutral-800 p-8 md:p-12 relative"
+          className="bg-white/80 border border-neutral-200 p-8 md:p-12 relative"
         >
           {/* Quote Icon */}
           <Quote className="absolute top-6 right-6 w-20 h-20 text-brand-500/10" />
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
             {/* Status with Timeline */}
-            <div ref={timelineRef} className="relative lg:border-r border-neutral-800 pr-8">
+            <div ref={timelineRef} className="relative lg:border-r border-neutral-200 pr-8">
               {/* Timeline */}
-              <div className="absolute left-0 top-0 bottom-0 w-px bg-neutral-800">
+              <div className="absolute left-0 top-0 bottom-0 w-px bg-neutral-200">
                 <div className="timeline-line absolute top-0 left-0 w-full bg-brand-500" style={{ height: 0 }} />
               </div>
 
@@ -789,10 +789,10 @@ const CaseStudySection: React.FC<{ caseStudy: ServiceType['caseStudy']; hideClie
                     <div className="relative">
                       <div className="timeline-dot absolute -left-8 top-1 w-4 h-4 bg-brand-500 rounded-full transform scale-0" />
                       <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2 font-mono">Caso Documentado</p>
-                      <p className="text-white font-display font-bold text-lg leading-snug">
+                      <p className="text-black font-display font-bold text-lg leading-snug">
                         Captura de personas ajenas a la mina
                       </p>
-                      <p className="text-neutral-400 text-sm mt-2 leading-relaxed">
+                      <p className="text-neutral-600 text-sm mt-2 leading-relaxed">
                         Intervención y detención de intrusos no autorizados en zona de operaciones mineras
                       </p>
                     </div>
@@ -802,7 +802,7 @@ const CaseStudySection: React.FC<{ caseStudy: ServiceType['caseStudy']; hideClie
                     <div className="relative">
                       <div className="timeline-dot absolute -left-8 top-1 w-4 h-4 bg-brand-500 rounded-full transform scale-0" />
                       <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2 font-mono">Cliente</p>
-                      <p className="text-white font-display font-bold text-xl">{caseStudy.client}</p>
+                      <p className="text-black font-display font-bold text-xl">{caseStudy.client}</p>
                     </div>
 
                     <div className="relative">
@@ -826,20 +826,20 @@ const CaseStudySection: React.FC<{ caseStudy: ServiceType['caseStudy']; hideClie
 
             {/* Challenge, Solution & Result */}
             <div className="lg:col-span-2 space-y-8">
-              <div className="p-6 bg-neutral-900/50 border-l-2 border-red-500/50">
+              <div className="p-6 bg-white/60 border-l-2 border-red-500/50">
                 <div className="flex items-center gap-2 mb-4">
                   <Target className="w-5 h-5 text-red-500" />
                   <p className="text-red-400 text-sm font-display uppercase tracking-wider">El Desafio</p>
                 </div>
-                <p className="text-neutral-300 leading-relaxed">{caseStudy.challenge}</p>
+                <p className="text-neutral-700 leading-relaxed">{caseStudy.challenge}</p>
               </div>
 
-              <div className="p-6 bg-neutral-900/50 border-l-2 border-brand-500/50">
+              <div className="p-6 bg-white/60 border-l-2 border-brand-500/50">
                 <div className="flex items-center gap-2 mb-4">
                   <Zap className="w-5 h-5 text-brand-500" />
                   <p className="text-brand-400 text-sm font-display uppercase tracking-wider">Nuestra Solucion</p>
                 </div>
-                <p className="text-neutral-300 leading-relaxed">{caseStudy.solution}</p>
+                <p className="text-neutral-700 leading-relaxed">{caseStudy.solution}</p>
               </div>
 
               <div className="p-6 bg-gradient-to-r from-green-500/10 to-transparent border-l-2 border-green-500">
@@ -847,7 +847,7 @@ const CaseStudySection: React.FC<{ caseStudy: ServiceType['caseStudy']; hideClie
                   <TrendingUp className="w-5 h-5 text-green-500" />
                   <p className="text-green-400 text-sm font-display uppercase tracking-wider">Resultado</p>
                 </div>
-                <p className="text-white font-display font-bold text-xl">{caseStudy.result}</p>
+                <p className="text-black font-display font-bold text-xl">{caseStudy.result}</p>
               </div>
             </div>
           </div>
@@ -865,7 +865,7 @@ const BenefitsSection: React.FC<{ benefits: string[] }> = ({ benefits }) => {
   const leftRef = useReveal({ direction: 'left', duration: 800 });
 
   return (
-    <section className="py-24 bg-neutral-950 relative">
+    <section className="py-24 bg-white relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
           <div ref={leftRef as React.RefObject<HTMLDivElement>}>
@@ -875,10 +875,10 @@ const BenefitsSection: React.FC<{ benefits: string[] }> = ({ benefits }) => {
                 Ventajas Competitivas
               </span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-display font-bold text-white uppercase mb-8 tracking-tight">
+            <h2 className="text-4xl md:text-5xl font-display font-bold text-black uppercase mb-8 tracking-tight">
               Por que Elegirnos
             </h2>
-            <p className="text-neutral-400 leading-relaxed text-lg">
+            <p className="text-neutral-600 leading-relaxed text-lg">
               Cada servicio de ADS Security viene respaldado por mas de una decada
               de experiencia, certificaciones y un compromiso
               inquebrantable con la excelencia operativa.
@@ -897,10 +897,10 @@ const BenefitsSection: React.FC<{ benefits: string[] }> = ({ benefits }) => {
             {benefits.map((benefit, idx) => (
               <div
                 key={idx}
-                className="flex items-start gap-4 p-5 bg-neutral-900/30 border-l-2 border-brand-500 hover:bg-neutral-900/50 hover:border-l-4 transition-all group"
+                className="flex items-start gap-4 p-5 bg-neutral-100/30 border-l-2 border-brand-500 hover:bg-neutral-100/50 hover:border-l-4 transition-all group"
               >
                 <CheckCircle2 className="w-6 h-6 text-brand-500 flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform" />
-                <p className="text-white group-hover:text-brand-100 transition-colors">{benefit}</p>
+                <p className="text-black group-hover:text-brand-700 transition-colors">{benefit}</p>
               </div>
             ))}
           </div>
@@ -914,7 +914,7 @@ const StatCounter: React.FC<{ value: number; suffix: string; label: string }> = 
   const counterRef = useCounter(value, { duration: 2500, suffix });
 
   return (
-    <div className="text-center p-6 border border-neutral-800 bg-neutral-900/30">
+    <div className="text-center p-6 border border-neutral-200 bg-white/30">
       <p
         ref={counterRef as React.RefObject<HTMLParagraphElement>}
         className="text-4xl font-display font-bold text-brand-500"
@@ -936,13 +936,13 @@ const RelatedServicesSection: React.FC<{ currentId: string }> = ({ currentId }) 
   if (relatedServices.length === 0) return null;
 
   return (
-    <section className="py-24 bg-black">
+    <section className="py-24 bg-neutral-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <span className="text-brand-500 text-sm font-display uppercase tracking-[0.3em]">
             Servicios Complementarios
           </span>
-          <h2 className="mt-4 text-4xl font-display font-bold text-white uppercase tracking-tight">
+          <h2 className="mt-4 text-4xl font-display font-bold text-black uppercase tracking-tight">
             Tambien te puede interesar
           </h2>
         </div>
@@ -1138,7 +1138,7 @@ const CTAPhoneButton: React.FC = () => {
         onMouseLeave={handleMouseLeave}
         className="group relative"
       >
-        <div className={`flex items-center gap-4 px-8 py-4 border-2 font-display uppercase tracking-wider text-sm transition-all duration-300 ${isHovered ? 'border-brand-500 text-brand-500 bg-brand-500/5' : 'border-neutral-700 text-white'}`}>
+        <div className={`flex items-center gap-4 px-8 py-4 border-2 font-display uppercase tracking-wider text-sm transition-all duration-300 ${isHovered ? 'border-brand-500 text-brand-500 bg-brand-500/5' : 'border-neutral-300 text-black'}`}>
           <svg
             ref={iconRef}
             xmlns="http://www.w3.org/2000/svg"
@@ -1173,7 +1173,7 @@ const CTASection: React.FC<{ ctaText: string, ctaSubtext: string }> = ({ ctaText
   const containerRef = useReveal({ direction: 'up', duration: 1000 });
 
   return (
-    <section className="py-28 bg-gradient-to-b from-neutral-950 to-black relative overflow-hidden">
+    <section className="py-28 bg-gradient-to-b from-white to-neutral-100 relative overflow-hidden">
       {/* Radial glow */}
       <div className="absolute inset-0">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-brand-500/10 rounded-full blur-[120px]" />
@@ -1195,12 +1195,12 @@ const CTASection: React.FC<{ ctaText: string, ctaSubtext: string }> = ({ ctaText
       >
         <GlitchText
           text="Proteja sus Operaciones"
-          className="text-4xl md:text-6xl font-display font-bold text-white uppercase tracking-tight mb-6"
+          className="text-4xl md:text-6xl font-display font-bold text-black uppercase tracking-tight mb-6"
           intensity="low"
           trigger="inView"
         />
 
-        <p className="text-xl text-neutral-400 mb-12 max-w-2xl mx-auto leading-relaxed">
+        <p className="text-xl text-neutral-600 mb-12 max-w-2xl mx-auto leading-relaxed">
           {ctaSubtext}
         </p>
 
@@ -1237,13 +1237,13 @@ const ServiceDetailPage: React.FC = () => {
   if (!service) {
     return (
       <PageTransition>
-        <div className="min-h-screen flex items-center justify-center bg-black">
+        <div className="min-h-screen flex items-center justify-center bg-white">
           <div className="text-center">
             <TacticalHUD variant="brackets" size={120} color="#f59e0b" className="mx-auto mb-8" />
-            <h1 className="text-4xl font-display font-bold text-white mb-4 uppercase">
+            <h1 className="text-4xl font-display font-bold text-black mb-4 uppercase">
               Objetivo no Encontrado
             </h1>
-            <p className="text-neutral-400 mb-8 font-mono">
+            <p className="text-neutral-600 mb-8 font-mono">
               ERROR 404: El servicio solicitado no existe en el sistema.
             </p>
             <button
@@ -1263,7 +1263,7 @@ const ServiceDetailPage: React.FC = () => {
       <ServiceHero service={service} />
 
       {/* Description Section */}
-      <section className="py-20 bg-black relative">
+      <section className="py-20 bg-white relative">
         <div className="absolute inset-0 opacity-[0.02]">
           <div className="w-full h-full" style={{
             backgroundImage: `linear-gradient(90deg, #f59e0b 1px, transparent 1px)`,
@@ -1273,7 +1273,7 @@ const ServiceDetailPage: React.FC = () => {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="prose prose-invert prose-lg max-w-none">
             {service.longDescription.split('\n\n').map((paragraph, idx) => (
-              <p key={idx} className="text-neutral-300 leading-relaxed mb-6 first-letter:text-4xl first-letter:font-display first-letter:text-brand-500 first-letter:mr-1">
+              <p key={idx} className="text-neutral-700 leading-relaxed mb-6 first-letter:text-4xl first-letter:font-display first-letter:text-brand-500 first-letter:mr-1">
                 {paragraph}
               </p>
             ))}

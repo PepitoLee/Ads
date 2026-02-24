@@ -103,7 +103,7 @@ const ServicesHero: React.FC = () => {
         {/* Subtitle */}
         <p
           ref={subtitleRef}
-          className="text-neutral-400 text-lg max-w-2xl mx-auto font-light"
+          className="text-neutral-600 text-lg max-w-2xl mx-auto font-light"
         >
           Soluciones operativas especializadas para enfrentar desafios en mineria e industria.
         </p>
@@ -249,7 +249,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ service, index }) => {
       >
         <Link
           to={`/servicios/${service.slug}`}
-          className="block relative h-full bg-neutral-900/70 backdrop-blur-sm overflow-hidden"
+          className="block relative h-full bg-white/80 backdrop-blur-sm overflow-hidden"
         >
           {/* Animated Border SVG */}
           <svg className="absolute inset-0 w-full h-full pointer-events-none z-20">
@@ -297,10 +297,10 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ service, index }) => {
             </div>
 
             {/* HUD Corners */}
-            <div className="absolute top-2 left-2 w-6 h-6 border-l-2 border-t-2 border-neutral-700 group-hover:border-brand-500 transition-colors duration-500" />
-            <div className="absolute top-2 right-2 w-6 h-6 border-r-2 border-t-2 border-neutral-700 group-hover:border-brand-500 transition-colors duration-500" />
-            <div className="absolute bottom-2 left-2 w-6 h-6 border-l-2 border-b-2 border-neutral-700 group-hover:border-brand-500 transition-colors duration-500" />
-            <div className="absolute bottom-2 right-2 w-6 h-6 border-r-2 border-b-2 border-neutral-700 group-hover:border-brand-500 transition-colors duration-500" />
+            <div className="absolute top-2 left-2 w-6 h-6 border-l-2 border-t-2 border-neutral-300 group-hover:border-brand-500 transition-colors duration-500" />
+            <div className="absolute top-2 right-2 w-6 h-6 border-r-2 border-t-2 border-neutral-300 group-hover:border-brand-500 transition-colors duration-500" />
+            <div className="absolute bottom-2 left-2 w-6 h-6 border-l-2 border-b-2 border-neutral-300 group-hover:border-brand-500 transition-colors duration-500" />
+            <div className="absolute bottom-2 right-2 w-6 h-6 border-r-2 border-b-2 border-neutral-300 group-hover:border-brand-500 transition-colors duration-500" />
 
             {/* Icon with Glow */}
             <div className="relative mb-6">
@@ -315,12 +315,12 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ service, index }) => {
             </div>
 
             {/* Title */}
-            <h3 className="text-xl font-display font-bold text-white uppercase mb-3 group-hover:text-brand-400 transition-colors duration-300">
+            <h3 className="text-xl font-display font-bold text-black uppercase mb-3 group-hover:text-brand-400 transition-colors duration-300">
               {service.title}
             </h3>
 
             {/* Description */}
-            <p className="text-neutral-400 text-sm leading-relaxed mb-6 flex-grow">
+            <p className="text-neutral-600 text-sm leading-relaxed mb-6 flex-grow">
               {service.description}
             </p>
 
@@ -434,9 +434,9 @@ const StatsSection: React.FC = () => {
     <div ref={containerRef} className="mt-20">
       {/* Section Divider */}
       <div className="flex items-center gap-4 mb-10">
-        <div className="flex-1 h-px bg-gradient-to-r from-transparent via-neutral-700 to-transparent" />
+        <div className="flex-1 h-px bg-gradient-to-r from-transparent via-neutral-300 to-transparent" />
         <span className="text-neutral-600 font-mono text-xs uppercase tracking-widest">Estadisticas</span>
-        <div className="flex-1 h-px bg-gradient-to-r from-transparent via-neutral-700 to-transparent" />
+        <div className="flex-1 h-px bg-gradient-to-r from-transparent via-neutral-300 to-transparent" />
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -469,7 +469,7 @@ const StatCard: React.FC<StatCardProps> = ({ stat, index }) => {
 
   return (
     <div
-      className="stat-card relative p-6 bg-neutral-900/50 border border-neutral-800 hover:border-brand-500/30 transition-colors duration-500 overflow-hidden group opacity-0"
+      className="stat-card relative p-6 bg-white/60 border border-neutral-200 hover:border-brand-500/30 transition-colors duration-500 overflow-hidden group opacity-0"
     >
       {/* Icon Background */}
       <div className="absolute top-2 right-2 opacity-10 group-hover:opacity-20 transition-opacity">
@@ -561,7 +561,7 @@ const CTASection: React.FC = () => {
       className="relative mt-20 overflow-hidden"
     >
       {/* Background with Particles */}
-      <div className="absolute inset-0 bg-neutral-900">
+      <div className="absolute inset-0 bg-neutral-100">
         <ParticleField density={25} color="#f59e0b" speed={0.2} />
       </div>
 
@@ -578,10 +578,10 @@ const CTASection: React.FC = () => {
         <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
           {/* Text Content */}
           <div className="lg:max-w-xl">
-            <h3 className="cta-title text-2xl md:text-3xl font-display font-bold text-white mb-3 uppercase opacity-0">
+            <h3 className="cta-title text-2xl md:text-3xl font-display font-bold text-black mb-3 uppercase opacity-0">
               Tecnologia + Estrategia
             </h3>
-            <p className="cta-description text-neutral-400 leading-relaxed opacity-0">
+            <p className="cta-description text-neutral-600 leading-relaxed opacity-0">
               Nuestros drones y centros de control operan 24/7 para garantizar la continuidad de su negocio.
               Contamos con equipos de respuesta rapida y tecnologia de punta.
             </p>
@@ -626,18 +626,18 @@ const CTASection: React.FC = () => {
                 {/* Button with Brackets */}
                 <div className="relative flex items-center">
                   {/* Left Bracket */}
-                  <div className="w-3 h-14 border-l-2 border-t-2 border-b-2 border-neutral-600 group-hover:border-brand-500 transition-colors" />
+                  <div className="w-3 h-14 border-l-2 border-t-2 border-b-2 border-neutral-400 group-hover:border-brand-500 transition-colors" />
 
                   {/* Main Button Body */}
-                  <div className="relative px-6 py-4 bg-neutral-800 group-hover:bg-neutral-700 border-y border-neutral-600 group-hover:border-brand-500/50 transition-all">
-                    <span className="flex items-center gap-3 text-white font-display font-bold uppercase tracking-wider whitespace-nowrap">
+                  <div className="relative px-6 py-4 bg-neutral-200 group-hover:bg-neutral-300 border-y border-neutral-400 group-hover:border-brand-500/50 transition-all">
+                    <span className="flex items-center gap-3 text-black font-display font-bold uppercase tracking-wider whitespace-nowrap">
                       <Phone className="w-5 h-5 text-brand-500" />
                       Llamar Ahora
                     </span>
                   </div>
 
                   {/* Right Bracket */}
-                  <div className="w-3 h-14 border-r-2 border-t-2 border-b-2 border-neutral-600 group-hover:border-brand-500 transition-colors" />
+                  <div className="w-3 h-14 border-r-2 border-t-2 border-b-2 border-neutral-400 group-hover:border-brand-500 transition-colors" />
                 </div>
               </a>
             </MagneticElement>

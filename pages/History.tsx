@@ -263,7 +263,7 @@ const TacticalTimeline: React.FC<{ activeIndex: number; onNodeClick: (i: number)
                   className={`w-4 h-4 rounded-full border-2 transition-all duration-300 ${
                     activeIndex === i
                       ? 'bg-brand-500 border-brand-500'
-                      : 'bg-neutral-900 border-neutral-600 group-hover:border-brand-500'
+                      : 'bg-white border-neutral-400 group-hover:border-brand-500'
                   }`}
                 />
 
@@ -276,7 +276,7 @@ const TacticalTimeline: React.FC<{ activeIndex: number; onNodeClick: (i: number)
 
                 {/* Hover tooltip */}
                 <div className="absolute -top-12 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                  <div className="bg-neutral-900 border border-neutral-700 px-3 py-1 rounded text-xs font-mono text-white whitespace-nowrap">
+                  <div className="bg-white border border-neutral-300 px-3 py-1 rounded text-xs font-mono text-black whitespace-nowrap">
                     {mission.code}
                   </div>
                 </div>
@@ -311,7 +311,7 @@ const MilestoneCard: React.FC<{ mission: typeof missions[0]; index: number }> = 
     >
       <div className="relative group">
         {/* Card */}
-        <div className="relative bg-neutral-950 border border-neutral-800 hover:border-brand-500/50 transition-all duration-500 overflow-hidden">
+        <div className="relative bg-white border border-neutral-200 hover:border-brand-500/50 transition-all duration-500 overflow-hidden">
           {/* Corner brackets */}
           <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-brand-500 opacity-0 group-hover:opacity-100 transition-opacity" />
           <div className="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-brand-500 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -319,7 +319,7 @@ const MilestoneCard: React.FC<{ mission: typeof missions[0]; index: number }> = 
           <div className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-brand-500 opacity-0 group-hover:opacity-100 transition-opacity" />
 
           {/* Header */}
-          <div className="flex items-center justify-between p-4 border-b border-neutral-800 bg-neutral-900/50">
+          <div className="flex items-center justify-between p-4 border-b border-neutral-200 bg-neutral-100">
             <div className="flex items-center gap-3">
               <div
                 className="w-10 h-10 flex items-center justify-center border rounded"
@@ -333,14 +333,14 @@ const MilestoneCard: React.FC<{ mission: typeof missions[0]; index: number }> = 
                 </div>
                 <div
                   ref={isInView ? titleRef as any : null}
-                  className="font-display font-bold text-lg text-white uppercase tracking-wide"
+                  className="font-display font-bold text-lg text-black uppercase tracking-wide"
                 >
                   {mission.title}
                 </div>
               </div>
             </div>
             <div className="text-right">
-              <div className="font-mono text-4xl font-bold text-neutral-800">
+              <div className="font-mono text-4xl font-bold text-neutral-200">
                 {mission.year}
               </div>
             </div>
@@ -361,10 +361,10 @@ const MilestoneCard: React.FC<{ mission: typeof missions[0]; index: number }> = 
             </div>
 
             {/* Divider */}
-            <div className="h-[1px] bg-gradient-to-r from-transparent via-neutral-700 to-transparent mb-6" />
+            <div className="h-[1px] bg-gradient-to-r from-transparent via-neutral-300 to-transparent mb-6" />
 
             {/* Description */}
-            <p className="text-neutral-400 leading-relaxed mb-6">
+            <p className="text-neutral-600 leading-relaxed mb-6">
               {mission.desc}
             </p>
 
@@ -426,7 +426,7 @@ const StatsSection: React.FC = () => {
           {stats.map((stat, i) => (
             <motion.div
               key={i}
-              className="relative p-6 bg-neutral-950 border border-neutral-800 hover:border-brand-500/30 transition-colors group"
+              className="relative p-6 bg-white border border-neutral-200 hover:border-brand-500/30 transition-colors group"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -503,7 +503,7 @@ const History: React.FC = () => {
       {/* Milestone cards */}
       <div className="relative py-16 px-4">
         {/* Vertical center line (desktop) */}
-        <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-[2px] bg-gradient-to-b from-transparent via-neutral-800 to-transparent transform -translate-x-1/2" />
+        <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-[2px] bg-gradient-to-b from-transparent via-neutral-300 to-transparent transform -translate-x-1/2" />
 
         <div className="max-w-5xl mx-auto space-y-16">
           {missions.map((mission, index) => (

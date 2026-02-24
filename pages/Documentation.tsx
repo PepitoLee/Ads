@@ -150,14 +150,14 @@ const DataField: React.FC<DataFieldProps> = ({ icon: Icon, label, value, highlig
       className={`group p-4 border transition-all duration-300 opacity-0 ${
         highlight
           ? 'border-emerald-500/30 bg-emerald-500/5 hover:border-emerald-500/60'
-          : 'border-neutral-800 bg-neutral-950 hover:border-neutral-700'
+          : 'border-neutral-200 bg-white hover:border-neutral-300'
       }`}
     >
       <div className="flex items-start gap-3">
         <div className={`p-2 rounded transition-colors ${
           highlight
             ? 'bg-emerald-500/20 text-emerald-500'
-            : 'bg-neutral-800 text-neutral-400 group-hover:text-brand-500'
+            : 'bg-neutral-200 text-neutral-600 group-hover:text-brand-500'
         }`}>
           <Icon className="w-4 h-4" />
         </div>
@@ -165,7 +165,7 @@ const DataField: React.FC<DataFieldProps> = ({ icon: Icon, label, value, highlig
           <div className="font-mono text-xs text-neutral-500 uppercase tracking-wider mb-1">
             {label}
           </div>
-          <div className={`font-medium break-words ${highlight ? 'text-emerald-400' : 'text-white'}`}>
+          <div className={`font-medium break-words ${highlight ? 'text-emerald-400' : 'text-black'}`}>
             {value}
           </div>
         </div>
@@ -212,10 +212,10 @@ const CompanyCard: React.FC = () => {
               <Building2 className="w-8 h-8 text-emerald-500" />
             </div>
             <div>
-              <h2 className="font-display font-bold text-xl md:text-2xl text-white uppercase tracking-wide">
+              <h2 className="font-display font-bold text-xl md:text-2xl text-black uppercase tracking-wide">
                 {companyInfo.nombreComercial}
               </h2>
-              <p className="text-neutral-400 text-sm font-mono">
+              <p className="text-neutral-600 text-sm font-mono">
                 {companyInfo.razonSocial}
               </p>
             </div>
@@ -274,7 +274,7 @@ const StatCard: React.FC<{ value: number; suffix: string; label: string; icon: R
 
   return (
     <motion.div
-      className="relative p-6 bg-neutral-950 border border-neutral-800 hover:border-emerald-500/30 transition-all duration-300 group"
+      className="relative p-6 bg-white border border-neutral-200 hover:border-emerald-500/30 transition-all duration-300 group"
       initial={{ opacity: 0, scale: 0.95 }}
       whileInView={{ opacity: 1, scale: 1 }}
       viewport={{ once: true }}
@@ -324,14 +324,14 @@ const Certifications: React.FC = () => {
   return (
     <motion.div
       ref={certRef}
-      className="p-6 border border-neutral-800 bg-neutral-950"
+      className="p-6 border border-neutral-200 bg-white"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
     >
       <div className="flex items-center gap-3 mb-6">
         <Award className="w-5 h-5 text-brand-500" />
-        <h3 className="font-display font-bold text-lg text-white uppercase tracking-wide">
+        <h3 className="font-display font-bold text-lg text-black uppercase tracking-wide">
           Certificaciones y Habilitaciones
         </h3>
       </div>
@@ -340,12 +340,12 @@ const Certifications: React.FC = () => {
         {companyInfo.certificaciones.map((cert, i) => (
           <div
             key={i}
-            className="cert-badge flex items-center gap-3 p-3 bg-neutral-900 border border-neutral-800 hover:border-brand-500/30 transition-colors opacity-0"
+            className="cert-badge flex items-center gap-3 p-3 bg-neutral-50 border border-neutral-200 hover:border-brand-500/30 transition-colors opacity-0"
           >
             <div className="w-8 h-8 bg-brand-500/20 flex items-center justify-center">
               <BadgeCheck className="w-4 h-4 text-brand-500" />
             </div>
-            <span className="text-neutral-300 text-sm">{cert}</span>
+            <span className="text-neutral-700 text-sm">{cert}</span>
           </div>
         ))}
       </div>
@@ -382,7 +382,7 @@ const Documentation: React.FC = () => {
 
         {/* Footer note */}
         <motion.div
-          className="text-center py-8 border-t border-neutral-800"
+          className="text-center py-8 border-t border-neutral-200"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}

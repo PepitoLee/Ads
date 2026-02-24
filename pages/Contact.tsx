@@ -171,7 +171,7 @@ const InfoCard: React.FC<InfoCardProps> = ({ icon: Icon, title, children, delay 
   return (
     <div
       ref={cardRef}
-      className="group relative p-5 bg-neutral-950 border border-neutral-800 hover:border-cyan-500/40 transition-all duration-500 opacity-0"
+      className="group relative p-5 bg-white border border-neutral-200 hover:border-cyan-500/40 transition-all duration-500 opacity-0"
     >
       {/* Hover glow effect */}
       <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -185,10 +185,10 @@ const InfoCard: React.FC<InfoCardProps> = ({ icon: Icon, title, children, delay 
           <Icon className="w-5 h-5 text-cyan-500" />
         </div>
         <div className="flex-1">
-          <h3 className="font-display font-bold text-white uppercase tracking-wide text-sm mb-2">
+          <h3 className="font-display font-bold text-black uppercase tracking-wide text-sm mb-2">
             {title}
           </h3>
-          <div className="text-neutral-400 text-sm leading-relaxed">
+          <div className="text-neutral-600 text-sm leading-relaxed">
             {children}
           </div>
         </div>
@@ -226,7 +226,7 @@ const ContactInfoSection: React.FC = () => {
       </InfoCard>
 
       <InfoCard icon={Building2} title="Información Fiscal" delay={4}>
-        <p>RUC: <span className="text-white font-mono">{contactData.ruc}</span></p>
+        <p>RUC: <span className="text-black font-mono">{contactData.ruc}</span></p>
         <p className="text-emerald-500/80 flex items-center gap-1 mt-1">
           <CheckCircle2 className="w-3 h-3" />
           <span>Activo y Habido</span>
@@ -271,17 +271,17 @@ const ContactForm: React.FC = () => {
   };
 
   const inputClasses = (fieldName: string) => `
-    w-full bg-black border p-4 text-white
+    w-full bg-white border p-4 text-black
     focus:outline-none transition-all duration-300
     ${focused === fieldName
       ? 'border-cyan-500 shadow-[0_0_20px_rgba(6,182,212,0.15)]'
-      : 'border-neutral-800 hover:border-neutral-700'
+      : 'border-neutral-200 hover:border-neutral-400'
     }
   `;
 
   return (
     <motion.div
-      className="relative bg-neutral-950 border border-neutral-800 p-8"
+      className="relative bg-white border border-neutral-200 p-8"
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -293,7 +293,7 @@ const ContactForm: React.FC = () => {
           <MessageSquare className="w-5 h-5 text-brand-500" />
         </div>
         <div>
-          <h3 className="font-display font-bold text-xl text-white uppercase tracking-wide">
+          <h3 className="font-display font-bold text-xl text-black uppercase tracking-wide">
             Solicitar Cotización
           </h3>
           <p className="text-neutral-500 text-sm">Complete el formulario y le responderemos en menos de 24 horas</p>
@@ -489,7 +489,7 @@ const MapSection: React.FC = () => {
         <div className="h-[1px] w-16 bg-gradient-to-r from-transparent to-brand-500/50" />
         <div className="flex items-center gap-3">
           <MapPin className="w-5 h-5 text-brand-500" />
-          <h3 className="font-display font-bold text-xl text-white uppercase tracking-wide">
+          <h3 className="font-display font-bold text-xl text-black uppercase tracking-wide">
             Nuestra Ubicación
           </h3>
         </div>
@@ -499,7 +499,7 @@ const MapSection: React.FC = () => {
       {/* Map container */}
       <div className="relative">
         {/* Decorative frame */}
-        <div className="absolute -inset-2 border border-neutral-800 pointer-events-none" />
+        <div className="absolute -inset-2 border border-neutral-200 pointer-events-none" />
 
         {/* Corner accents */}
         <div className="absolute -top-2 -left-2 w-6 h-6 border-t-2 border-l-2 border-brand-500" />
@@ -508,7 +508,7 @@ const MapSection: React.FC = () => {
         <div className="absolute -bottom-2 -right-2 w-6 h-6 border-b-2 border-r-2 border-brand-500" />
 
         {/* Map iframe */}
-        <div ref={mapRef} className="relative h-[400px] md:h-[500px] bg-neutral-900 overflow-hidden">
+        <div ref={mapRef} className="relative h-[400px] md:h-[500px] bg-neutral-100 overflow-hidden">
           <iframe
             src={mapEmbedUrl}
             width="100%"
@@ -522,7 +522,7 @@ const MapSection: React.FC = () => {
           />
 
           {/* Location overlay */}
-          <div className="absolute bottom-6 left-6 right-6 md:right-auto md:max-w-md bg-black/95 backdrop-blur-sm border border-neutral-700 p-5">
+          <div className="absolute bottom-6 left-6 right-6 md:right-auto md:max-w-md bg-white/95 backdrop-blur-sm border border-neutral-300 p-5">
             <div className="flex items-start gap-4">
               <div className="p-3 bg-brand-500/20 border border-brand-500/30">
                 <MapPin className="w-5 h-5 text-brand-500" />
@@ -532,10 +532,10 @@ const MapSection: React.FC = () => {
                   <span className="w-2 h-2 bg-brand-500 rounded-full animate-pulse" />
                   Sede Central
                 </div>
-                <p className="text-white font-medium mb-1">
+                <p className="text-black font-medium mb-1">
                   {contactData.direccion}
                 </p>
-                <p className="text-neutral-400 text-sm">
+                <p className="text-neutral-600 text-sm">
                   {contactData.distrito}, {contactData.provincia}, {contactData.departamento}
                 </p>
                 <a
@@ -586,10 +586,10 @@ const QuickContactStrip: React.FC = () => {
       {quickItems.map((item, i) => (
         <div
           key={i}
-          className="quick-item flex items-center gap-3 p-4 bg-neutral-950 border border-neutral-800 opacity-0"
+          className="quick-item flex items-center gap-3 p-4 bg-white border border-neutral-200 opacity-0"
         >
           <item.icon className={`w-5 h-5 ${item.color}`} />
-          <span className="text-neutral-300 text-sm">{item.text}</span>
+          <span className="text-neutral-700 text-sm">{item.text}</span>
         </div>
       ))}
     </div>
@@ -618,7 +618,7 @@ const Contact: React.FC = () => {
               <div className="p-2 bg-cyan-500/20 border border-cyan-500/30">
                 <Phone className="w-4 h-4 text-cyan-500" />
               </div>
-              <h2 className="font-display font-bold text-lg text-white uppercase tracking-wide">
+              <h2 className="font-display font-bold text-lg text-black uppercase tracking-wide">
                 Información de Contacto
               </h2>
             </div>

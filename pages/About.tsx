@@ -168,10 +168,10 @@ const VideoSection: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
         >
-          <h3 className="text-2xl font-display font-bold text-white uppercase tracking-wider mb-4">
+          <h3 className="text-2xl font-display font-bold text-black uppercase tracking-wider mb-4">
             VIDEO <span className="text-brand-500">INSTITUCIONAL</span>
           </h3>
-          <p className="text-neutral-400 max-w-xl mx-auto">
+          <p className="text-neutral-600 max-w-xl mx-auto">
             Conozca nuestra operacion, equipo y compromiso con la excelencia en seguridad.
           </p>
         </motion.div>
@@ -252,13 +252,13 @@ const CompanyCard: React.FC<CompanyCardProps> = ({ icon: Icon, title, descriptio
       <div
         ref={tiltRef as React.RefObject<HTMLDivElement>}
         onMouseEnter={handleMouseEnter}
-        className="group relative h-full p-8 bg-neutral-900/70 backdrop-blur border border-neutral-800 hover:border-brand-500/30 transition-all duration-500"
+        className="group relative h-full p-8 bg-white/80 backdrop-blur border border-neutral-200 hover:border-brand-500/30 transition-all duration-500"
       >
         {/* Corner Accents */}
-        <div className="absolute top-2 left-2 w-6 h-6 border-l-2 border-t-2 border-neutral-700 group-hover:border-brand-500 transition-colors duration-500" />
-        <div className="absolute top-2 right-2 w-6 h-6 border-r-2 border-t-2 border-neutral-700 group-hover:border-brand-500 transition-colors duration-500" />
-        <div className="absolute bottom-2 left-2 w-6 h-6 border-l-2 border-b-2 border-neutral-700 group-hover:border-brand-500 transition-colors duration-500" />
-        <div className="absolute bottom-2 right-2 w-6 h-6 border-r-2 border-b-2 border-neutral-700 group-hover:border-brand-500 transition-colors duration-500" />
+        <div className="absolute top-2 left-2 w-6 h-6 border-l-2 border-t-2 border-neutral-300 group-hover:border-brand-500 transition-colors duration-500" />
+        <div className="absolute top-2 right-2 w-6 h-6 border-r-2 border-t-2 border-neutral-300 group-hover:border-brand-500 transition-colors duration-500" />
+        <div className="absolute bottom-2 left-2 w-6 h-6 border-l-2 border-b-2 border-neutral-300 group-hover:border-brand-500 transition-colors duration-500" />
+        <div className="absolute bottom-2 right-2 w-6 h-6 border-r-2 border-b-2 border-neutral-300 group-hover:border-brand-500 transition-colors duration-500" />
 
         {/* Icon */}
         <div className="relative mb-6">
@@ -269,10 +269,10 @@ const CompanyCard: React.FC<CompanyCardProps> = ({ icon: Icon, title, descriptio
         </div>
 
         {/* Content */}
-        <h4 className="text-xl font-display font-bold text-white uppercase mb-4 group-hover:text-brand-400 transition-colors">
+        <h4 className="text-xl font-display font-bold text-black uppercase mb-4 group-hover:text-brand-400 transition-colors">
           {title}
         </h4>
-        <p className="text-neutral-400 text-sm leading-relaxed">
+        <p className="text-neutral-600 text-sm leading-relaxed">
           {description}
         </p>
 
@@ -329,7 +329,7 @@ const StatItem: React.FC<StatItemProps> = ({ value, suffix, label, icon: Icon, i
   const glowRef = useGlowPulse({ color: '#f59e0b', intensity: 15, duration: 3000 });
 
   return (
-    <div className="stat-item relative p-6 bg-neutral-900/50 border border-neutral-800 hover:border-brand-500/30 transition-colors duration-500 overflow-hidden group opacity-0">
+    <div className="stat-item relative p-6 bg-white/60 border border-neutral-200 hover:border-brand-500/30 transition-colors duration-500 overflow-hidden group opacity-0">
       {/* Icon Background */}
       <div className="absolute top-2 right-2 opacity-10 group-hover:opacity-20 transition-opacity">
         <Icon className="w-16 h-16 text-brand-500" />
@@ -406,9 +406,9 @@ const StatsSection: React.FC = () => {
     <section ref={containerRef} className="py-16">
       {/* Divider */}
       <div className="flex items-center gap-4 mb-10">
-        <div className="flex-1 h-px bg-gradient-to-r from-transparent via-neutral-700 to-transparent" />
+        <div className="flex-1 h-px bg-gradient-to-r from-transparent via-neutral-300 to-transparent" />
         <span className="text-neutral-600 font-mono text-xs uppercase tracking-widest">Estadisticas</span>
-        <div className="flex-1 h-px bg-gradient-to-r from-transparent via-neutral-700 to-transparent" />
+        <div className="flex-1 h-px bg-gradient-to-r from-transparent via-neutral-300 to-transparent" />
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -473,7 +473,7 @@ const CTASection: React.FC = () => {
   return (
     <section ref={sectionRef} className="relative py-16 overflow-hidden">
       {/* Background - reduced particles for performance */}
-      <div className="absolute inset-0 bg-neutral-900">
+      <div className="absolute inset-0 bg-neutral-100">
         <ParticleField density={10} color="#f59e0b" speed={0.4} />
       </div>
 
@@ -486,10 +486,10 @@ const CTASection: React.FC = () => {
         <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
           {/* Text */}
           <div className="lg:max-w-xl">
-            <h3 className="cta-title text-2xl md:text-3xl font-display font-bold text-white mb-3 uppercase opacity-0">
+            <h3 className="cta-title text-2xl md:text-3xl font-display font-bold text-black mb-3 uppercase opacity-0">
               Proteja su Negocio Hoy
             </h3>
-            <p className="cta-description text-neutral-400 leading-relaxed opacity-0">
+            <p className="cta-description text-neutral-600 leading-relaxed opacity-0">
               Solicite una evaluacion gratuita y descubra como podemos fortalecer la seguridad de su empresa con soluciones personalizadas.
             </p>
           </div>
@@ -515,14 +515,14 @@ const CTASection: React.FC = () => {
             <MagneticElement strength={0.15}>
               <a href="tel:+51999999999" className="cta-button group relative flex items-center gap-4 opacity-0">
                 <div className="relative flex items-center">
-                  <div className="w-3 h-14 border-l-2 border-t-2 border-b-2 border-neutral-600 group-hover:border-brand-500 transition-colors" />
-                  <div className="relative px-6 py-4 bg-neutral-800 group-hover:bg-neutral-700 border-y border-neutral-600 group-hover:border-brand-500/50 transition-all">
-                    <span className="flex items-center gap-3 text-white font-display font-bold uppercase tracking-wider whitespace-nowrap">
+                  <div className="w-3 h-14 border-l-2 border-t-2 border-b-2 border-neutral-400 group-hover:border-brand-500 transition-colors" />
+                  <div className="relative px-6 py-4 bg-neutral-200 group-hover:bg-neutral-300 border-y border-neutral-400 group-hover:border-brand-500/50 transition-all">
+                    <span className="flex items-center gap-3 text-black font-display font-bold uppercase tracking-wider whitespace-nowrap">
                       <Phone className="w-5 h-5 text-brand-500" />
                       Llamar
                     </span>
                   </div>
-                  <div className="w-3 h-14 border-r-2 border-t-2 border-b-2 border-neutral-600 group-hover:border-brand-500 transition-colors" />
+                  <div className="w-3 h-14 border-r-2 border-t-2 border-b-2 border-neutral-400 group-hover:border-brand-500 transition-colors" />
                 </div>
               </a>
             </MagneticElement>

@@ -8,14 +8,14 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=Exo+2:ital,wght@0,400;0,700;0,800;1,800&family=Barlow+Condensed:ital,wght@0,400;0,700;0,800;1,800&display=swap" rel="stylesheet">
     <script>
       tailwind.config = {
         theme: {
           extend: {
             fontFamily: {
-              sans: ['Inter', 'sans-serif'],
-              display: ['Rajdhani', 'sans-serif'],
+              sans: ['Exo 2', 'Barlow Condensed', 'Inter', 'sans-serif'],
+              display: ['Exo 2', 'Barlow Condensed', 'Rajdhani', 'sans-serif'],
             },
             colors: {
               neutral: {
@@ -43,6 +43,23 @@
         background-color: #000000;
         color: #f5f5f5;
         overflow-x: hidden;
+        font-family: 'Exo 2', 'Barlow Condensed', 'Inter', sans-serif;
+      }
+      h1, h2 {
+        font-family: 'Exo 2', 'Barlow Condensed', sans-serif;
+        font-weight: 800;
+        font-style: italic;
+      }
+      .font-heading {
+        font-family: 'Exo 2', 'Barlow Condensed', sans-serif;
+        font-weight: 800;
+        font-style: italic;
+      }
+      .font-label {
+        font-family: 'Exo 2', 'Barlow Condensed', sans-serif;
+        font-weight: 400;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
       }
       .bg-grid {
         background-size: 40px 40px;

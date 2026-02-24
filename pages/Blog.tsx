@@ -99,7 +99,7 @@ const CategoryFilter: React.FC<{
         className={`px-4 py-2 text-sm font-display uppercase tracking-wider transition-all duration-300 border ${
           active === null
             ? 'bg-brand-500 text-black border-brand-500'
-            : 'bg-transparent text-neutral-400 border-neutral-700 hover:border-brand-500/50 hover:text-brand-400'
+            : 'bg-transparent text-neutral-600 border-neutral-300 hover:border-brand-500/50 hover:text-brand-600'
         }`}
       >
         Todos
@@ -111,7 +111,7 @@ const CategoryFilter: React.FC<{
           className={`px-4 py-2 text-sm font-display uppercase tracking-wider transition-all duration-300 border ${
             active === cat
               ? 'bg-brand-500 text-black border-brand-500'
-              : 'bg-transparent text-neutral-400 border-neutral-700 hover:border-brand-500/50 hover:text-brand-400'
+              : 'bg-transparent text-neutral-600 border-neutral-300 hover:border-brand-500/50 hover:text-brand-600'
           }`}
         >
           {cat}
@@ -168,7 +168,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ post, index }) => {
     <div ref={cardRef} className="h-full opacity-0">
       <Link
         to={`/blog/${post.slug}`}
-        className="group block relative h-full bg-neutral-900/70 backdrop-blur-sm overflow-hidden"
+        className="group block relative h-full bg-white/80 backdrop-blur-sm overflow-hidden border border-neutral-200"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -181,7 +181,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ post, index }) => {
               isHovered ? 'scale-110 opacity-80' : 'scale-100 opacity-60'
             }`}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-neutral-900 via-neutral-900/40 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-white via-white/40 to-transparent" />
 
           {/* Category Badge */}
           <div className="absolute top-4 left-4 px-3 py-1 bg-brand-500/90 text-black text-xs font-display font-bold uppercase tracking-wider">
@@ -218,12 +218,12 @@ const BlogCard: React.FC<BlogCardProps> = ({ post, index }) => {
           </div>
 
           {/* Title */}
-          <h3 className="text-lg font-display font-bold text-white uppercase mb-3 group-hover:text-brand-400 transition-colors duration-300 line-clamp-2">
+          <h3 className="text-lg font-display font-bold text-black uppercase mb-3 group-hover:text-brand-600 transition-colors duration-300 line-clamp-2">
             {post.title}
           </h3>
 
           {/* Excerpt */}
-          <p className="text-neutral-400 text-sm leading-relaxed mb-4 line-clamp-3 flex-grow">
+          <p className="text-neutral-600 text-sm leading-relaxed mb-4 line-clamp-3 flex-grow">
             {post.excerpt}
           </p>
 
@@ -232,7 +232,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ post, index }) => {
             {post.tags.slice(0, 3).map((tag) => (
               <span
                 key={tag}
-                className="flex items-center gap-1 text-[10px] text-neutral-500 border border-neutral-800 px-2 py-0.5 font-mono"
+                className="flex items-center gap-1 text-[10px] text-neutral-500 border border-neutral-200 px-2 py-0.5 font-mono"
               >
                 <Tag className="w-2.5 h-2.5" />
                 {tag}
@@ -259,8 +259,8 @@ const BlogCard: React.FC<BlogCardProps> = ({ post, index }) => {
         />
 
         {/* HUD Corners */}
-        <div className="absolute top-2 left-2 w-6 h-6 border-l-2 border-t-2 border-neutral-700 group-hover:border-brand-500 transition-colors duration-500" />
-        <div className="absolute top-2 right-2 w-6 h-6 border-r-2 border-t-2 border-neutral-700 group-hover:border-brand-500 transition-colors duration-500" />
+        <div className="absolute top-2 left-2 w-6 h-6 border-l-2 border-t-2 border-neutral-300 group-hover:border-brand-500 transition-colors duration-500" />
+        <div className="absolute top-2 right-2 w-6 h-6 border-r-2 border-t-2 border-neutral-300 group-hover:border-brand-500 transition-colors duration-500" />
       </Link>
     </div>
   );
